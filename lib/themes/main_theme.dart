@@ -6,7 +6,7 @@ Widget mainTheme({showMenu = true, child}) {
   Widget headerRight = Row(
     children: [
       borderIcon(Image.asset(Assets.iconVietnam)),
-      showMenu
+      !showMenu
           ? Container(
               margin: const EdgeInsets.only(left: 10),
               child: borderIcon(Image.asset(Assets.iconMenu)))
@@ -21,19 +21,18 @@ Widget mainTheme({showMenu = true, child}) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Image.asset(Assets.logo, height: 40),
+        Spacer(),
         headerRight,
       ],
     ),
   );
 
-  return MaterialApp(
-    title: 'Welcome to Flutter',
-    home: Scaffold(
-      appBar: AppBar(
-        title: header,
-        backgroundColor: Colors.white,
-      ),
-      body: child,
+  return Scaffold(
+    appBar: AppBar(
+      title: header,
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.white,
     ),
+    body: SingleChildScrollView(child: child),
   );
 }

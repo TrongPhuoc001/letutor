@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:lettutor/constants/assets.dart';
 import 'package:lettutor/themes/main_theme.dart';
+import 'package:lettutor/ui/login/widgets/login_form.dart';
+import 'package:lettutor/ui/login/widgets/login_instruction.dart';
+import 'package:lettutor/ui/login/widgets/social_provider.dart';
 
 import '../my_app.dart';
 
@@ -14,14 +17,27 @@ class Login extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            const Text('Login'),
-            TextButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const MyApp();
-                }));
-              },
-              child: const Text("Login"),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Image.asset(Assets.loginBanner),
+                  LoginInstruction(),
+                  LoginForm(context),
+                  SocialProvider(),
+                  Center(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Bạn chưa có tài khoản?'),
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text('Đăng ký'),
+                      ),
+                    ],
+                  )),
+                ],
+              ),
             ),
           ],
         ),
