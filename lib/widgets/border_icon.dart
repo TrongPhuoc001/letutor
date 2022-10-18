@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-Widget borderIcon(Widget icon) {
+Widget borderIcon(Widget icon, {double padding = 10, double size = 10}) {
   return Container(
-    padding: const EdgeInsets.all(10),
+    padding: EdgeInsets.all(padding),
     decoration:
         BoxDecoration(color: Colors.blueGrey[100], shape: BoxShape.circle),
     child: ClipOval(
       child: SizedBox.fromSize(
-        size: const Size.fromRadius(10), // Image radius
+        size: Size.fromRadius(size), // Image radius
         child: icon,
       ),
     ),

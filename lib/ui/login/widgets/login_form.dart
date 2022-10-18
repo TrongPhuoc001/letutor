@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lettutor/ui/forget_password/forget_password.dart';
 
 import '../../my_app.dart';
 
@@ -35,7 +36,7 @@ Widget LoginForm(context) {
           textAlign: TextAlign.left,
         ),
         const Padding(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
             child: TextField(
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -46,7 +47,14 @@ Widget LoginForm(context) {
               enableSuggestions: false,
               autocorrect: false,
             )),
-        TextButton(onPressed: () {}, child: const Text('Quên mật khẩu?')),
+        TextButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ForgetPassword()));
+            },
+            child: const Text('Quên mật khẩu?')),
         Row(
           children: [
             Expanded(

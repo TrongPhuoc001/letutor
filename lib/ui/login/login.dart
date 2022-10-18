@@ -12,8 +12,9 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return mainTheme(
-      showMenu: false,
+    return MainTheme(
+      hideMenu: true,
+      context: context,
       child: Center(
         child: Column(
           children: [

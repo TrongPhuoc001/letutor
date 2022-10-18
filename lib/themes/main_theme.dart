@@ -1,16 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/assets.dart';
+import 'package:lettutor/ui/menu/menu.dart';
 import 'package:lettutor/widgets/border_icon.dart';
 
-Widget mainTheme({showMenu = true, child}) {
+import '../model/user.dart';
+
+Widget MainTheme({hideMenu = false, child, context, onMenu = false}) {
   Widget headerRight = Row(
     children: [
       borderIcon(Image.asset(Assets.iconVietnam)),
-      !showMenu
-          ? Container(
+      hideMenu
+          ? const SizedBox()
+          : Container(
               margin: const EdgeInsets.only(left: 10),
-              child: borderIcon(Image.asset(Assets.iconMenu)))
-          : const SizedBox(),
+              child: IconButton(
+                padding: const EdgeInsets.all(0),
+                icon: borderIcon(Image.asset(Assets.iconMenu)),
+                onPressed: () {
+                  if (onMenu) {
+                    Navigator.pop(context);
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Menu(
+                                user: User(
+                                    avatar:
+                                        "https://sandbox.api.lettutor.com/avatar/f569c202-7bbf-4620-af77-ecc1419a6b28avatar1657037111897.jpg",
+                                    name: "Long Long",
+                                    email: 'student@lettutor.com'))));
+                  }
+                },
+              )),
     ],
   );
 
