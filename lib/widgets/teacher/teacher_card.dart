@@ -7,26 +7,19 @@ import '../round_button_outlined.dart';
 
 Widget TeacherCard(Teacher teacher) {
   return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 0.1,
-                blurRadius: 10,
-                offset: Offset(0, 1),
-                blurStyle: BlurStyle.outer // changes position of shadow
-                ),
-          ]),
+      margin: const EdgeInsets.only(bottom: 20),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
       child: Card(
-          margin: EdgeInsets.all(0),
+          margin: const EdgeInsets.all(0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
             side: const BorderSide(
                 color: Color.fromARGB(179, 233, 231, 231), width: 1),
           ),
           child: Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   Stack(
@@ -49,13 +42,17 @@ Widget TeacherCard(Teacher teacher) {
                       Expanded(
                           child: Wrap(
                         children: teacher.tags
-                            .map((tag) => Chip(
-                                  label: Text(tag),
-                                  backgroundColor: Colors.blue[100],
-                                  labelStyle: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
+                            .map((tag) => Padding(
+                                  padding: EdgeInsets.only(right: 10),
+                                  child: Chip(
+                                    label: Text(tag),
+                                    backgroundColor:
+                                        Color.fromRGBO(0, 113, 240, 0.1),
+                                    labelStyle: const TextStyle(
+                                        color: Color.fromRGBO(0, 113, 240, 1),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
                                 ))
                             .toList(),
                       ))
@@ -68,14 +65,28 @@ Widget TeacherCard(Teacher teacher) {
                         teacher.decription,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.grey, fontSize: 14, height: 1.5),
                       ))
                     ],
                   ),
-                  RoundButtonOutLined(
-                    text: "Đặt lịch",
-                    onPressed: () {},
+                  Row(
+                    children: [
+                      const Expanded(child: SizedBox()),
+                      RoundButtonOutLined(
+                        child: Row(children: const [
+                          Icon(
+                            Icons.calendar_month,
+                            color: Colors.blue,
+                          ),
+                          Text(
+                            "Đặt lịch",
+                            style: TextStyle(color: Colors.blue),
+                          )
+                        ]),
+                        onPressed: () {},
+                      )
+                    ],
                   )
                 ],
               ))));

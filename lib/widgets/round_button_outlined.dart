@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget RoundButtonOutLined({text, onPressed}) {
+Widget RoundButtonOutLined({child, onPressed}) {
   return OutlinedButton(
     onPressed: onPressed,
     style: OutlinedButton.styleFrom(
@@ -9,6 +9,6 @@ Widget RoundButtonOutLined({text, onPressed}) {
         borderRadius: BorderRadius.circular(32.0),
       ),
     ),
-    child: Text(text, style: const TextStyle(color: Colors.blue)),
+    child: child,
   );
 }

@@ -57,7 +57,12 @@ Widget Fliter() {
               option.map((e) => RoundButon(text: e, onPressed: () {})).toList(),
         ),
       ),
-      RoundButtonOutLined(text: "Đặt lại bộ tìm kiếm", onPressed: () {})
+      RoundButtonOutLined(
+          child: Text(
+            "Đặt lại bộ tìm kiếm",
+            style: TextStyle(color: Colors.blue),
+          ),
+          onPressed: () {})
     ]),
   );
 }

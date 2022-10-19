@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lettutor/ui/forget_password/forget_password.dart';
+import 'package:lettutor/ui/teacher/find_teacher.dart';
 
 import '../../my_app.dart';
 
@@ -60,8 +61,10 @@ Widget LoginForm(context) {
             Expanded(
                 child: ElevatedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const MyApp()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FindTeacher()));
               },
               child: const Text('Đăng nhập',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),

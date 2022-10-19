@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lettutor/themes/main_theme.dart';
+import 'package:lettutor/ui/courses/buy_course.dart';
+import 'package:lettutor/ui/courses/course.dart';
 import 'package:lettutor/ui/login/login.dart';
 import 'package:lettutor/ui/my_app.dart';
 import 'package:lettutor/ui/profile/profile.dart';
+import 'package:lettutor/ui/teacher/find_teacher.dart';
 import 'package:lettutor/widgets/border_icon.dart';
 
 import '../../model/user.dart';
@@ -16,22 +19,24 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     List<MenuItem> menuItems = [
       const MenuItem(
-          title: 'Mua buổi học', icon: Icons.book, navigate: MyApp()),
+          title: 'Mua buổi học', icon: Icons.book, navigate: BuyCourses()),
       const MenuItem(
-          title: 'Đổi mật khuẩu', icon: Icons.key, navigate: MyApp()),
+          title: 'Đổi mật khuẩu', icon: Icons.key, navigate: FindTeacher()),
       const MenuItem(
-          title: 'Gia sư', icon: Icons.assessment, navigate: MyApp()),
-      const MenuItem(title: 'Lịch học', icon: Icons.today, navigate: MyApp()),
-      const MenuItem(title: 'Lịch sử', icon: Icons.history, navigate: MyApp()),
-      const MenuItem(title: 'Khóa học', icon: Icons.school, navigate: MyApp()),
+          title: 'Gia sư', icon: Icons.assessment, navigate: FindTeacher()),
+      const MenuItem(
+          title: 'Lịch học', icon: Icons.today, navigate: FindTeacher()),
+      const MenuItem(
+          title: 'Lịch sử', icon: Icons.history, navigate: FindTeacher()),
+      const MenuItem(title: 'Khóa học', icon: Icons.school, navigate: Course()),
       const MenuItem(
           title: 'Khóa học của tôi',
           icon: Icons.auto_stories,
-          navigate: MyApp()),
+          navigate: FindTeacher()),
       const MenuItem(
           title: 'Đăng ký làm gia sư',
           icon: Icons.assessment,
-          navigate: MyApp()),
+          navigate: FindTeacher()),
       const MenuItem(title: 'Đăng xuất', icon: Icons.logout, navigate: Login()),
     ];
 
