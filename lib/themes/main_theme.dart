@@ -25,6 +25,7 @@ Widget MainTheme({hideMenu = false, child, context, onMenu = false}) {
                         MaterialPageRoute(
                             builder: (context) => const Menu(
                                 user: User(
+                                    id: "f569c202-7bbf-4620-af77-ecc1419a6b28",
                                     avatar:
                                         "https://sandbox.api.lettutor.com/avatar/f569c202-7bbf-4620-af77-ecc1419a6b28avatar1657037111897.jpg",
                                     name: "Long Long",
