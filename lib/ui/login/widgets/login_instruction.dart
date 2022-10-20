@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-Widget LoginInstruction() {
+Widget LoginInstruction({type = "login"}) {
   return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: Column(children: [
         Container(
           padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
-          child: Text('Đăng nhập',
+          child: Text(type == "login" ? 'Đăng nhập' : 'Đăng ký',
               style: TextStyle(
                   fontSize: 32,
                   color: Colors.blue[600],

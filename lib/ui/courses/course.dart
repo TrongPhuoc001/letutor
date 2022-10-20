@@ -13,21 +13,32 @@ class Course extends StatelessWidget {
   Widget build(BuildContext context) {
     List<CourseModel> courses = [
       CourseModel(
-          imageUrl:
-              "https://camblycurriculumicons.s3.amazonaws.com/5e0…c750e7dc9886ac?h=d41d8cd98f00b204e9800998ecf8427e",
-          title: "Life in the Internet Age",
+          imageUrl: "assets/images/course1.png",
+          name: "Life in the Internet Age",
           description:
               "Let's discuss how technology is changing the way we live",
           level: "Intermediate",
-          totlalLessons: 9),
+          topics: [
+            TopicModel(name: 'The Internet'),
+            TopicModel(name: "Artidicial Intelligence"),
+            TopicModel(name: "Social Media"),
+            TopicModel(name: "Internet Privacy")
+          ],
+          purpose:
+              "You will learn vocabulary related to timely topics like remote work, artificial intelligence, online privacy, and more. In addition to discussion questions, you will practice intermediate level speaking tasks such as using data to describe trends.",
+          reason:
+              "Our world is rapidly changing thanks to new technology, and the vocabulary needed to discuss modern life is evolving almost daily. In this course you will learn the most up-to-date terminology from expertly crafted lessons as well from your native-speaking tutor."),
       CourseModel(
-          imageUrl:
-              "https://camblycurriculumicons.s3.amazonaws.com/5e2…8f1e9f625e8317?h=d41d8cd98f00b204e9800998ecf8427e",
-          title: "Caring for Our Planet",
+          imageUrl: "assets/images/course2.png",
+          name: "Caring for Our Planet",
           description:
               "Let's discuss our relationship as humans with our planet, Earth",
           level: "Intermediate",
-          totlalLessons: 7),
+          topics: [],
+          purpose:
+              "You will learn vocabulary related to timely topics like remote work, artificial intelligence, online privacy, and more. In addition to discussion questions, you will practice intermediate level speaking tasks such as using data to describe trends.",
+          reason:
+              "Our world is rapidly changing thanks to new technology, and the vocabulary needed to discuss modern life is evolving almost daily. In this course you will learn the most up-to-date terminology from expertly crafted lessons as well from your native-speaking tutor."),
     ];
     return MainTheme(
         context: context,
@@ -112,21 +123,30 @@ class Course extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
                 child: Row(children: [
                   TextButton(onPressed: () {}, child: Text("Khóa học")),
                   TextButton(
                       onPressed: () {},
                       child: Text("E-book",
-                          style: TextStyle(color: Colors.black))),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w200))),
                   TextButton(
                       onPressed: () {},
                       child: Text("Interactive E-book",
-                          style: TextStyle(color: Colors.black)))
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w200)))
                 ]),
               ),
+              Divider(),
+              Text("English For Traveling",
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
               Column(
-                children: courses.map((course) => CourseCard(course)).toList(),
+                children: courses
+                    .map((course) => CourseCard(course, context))
+                    .toList(),
               )
             ],
           ),

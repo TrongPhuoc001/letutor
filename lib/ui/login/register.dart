@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/assets.dart';
 import 'package:lettutor/themes/main_theme.dart';
-import 'package:lettutor/ui/login/register.dart';
+import 'package:lettutor/ui/login/login.dart';
 import 'package:lettutor/ui/login/widgets/login_form.dart';
 import 'package:lettutor/ui/login/widgets/login_instruction.dart';
 import 'package:lettutor/ui/login/widgets/social_provider.dart';
 
 import '../my_app.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class Register extends StatelessWidget {
+  const Register({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,22 +24,20 @@ class Login extends StatelessWidget {
               child: Column(
                 children: [
                   Image.asset(Assets.loginBanner),
-                  LoginInstruction(),
-                  LoginForm(context),
+                  LoginInstruction(type: "register"),
+                  LoginForm(context, type: "register"),
                   SocialProvider(),
                   Center(
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Bạn chưa có tài khoản?'),
+                      const Text('Bạn đã có tài khoản?'),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Register()));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Login()));
                         },
-                        child: const Text('Đăng ký'),
+                        child: const Text('Đăng nhập'),
                       ),
                     ],
                   )),

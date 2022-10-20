@@ -5,7 +5,7 @@ import 'package:lettutor/ui/teacher/find_teacher.dart';
 
 import '../../my_app.dart';
 
-Widget LoginForm(context) {
+Widget LoginForm(context, {type = "login"}) {
   return Container(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -48,14 +48,16 @@ Widget LoginForm(context) {
               enableSuggestions: false,
               autocorrect: false,
             )),
-        TextButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ForgetPassword()));
-            },
-            child: const Text('Quên mật khẩu?')),
+        type == "login"
+            ? TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ForgetPassword()));
+                },
+                child: const Text('Quên mật khẩu?'))
+            : SizedBox(),
         Row(
           children: [
             Expanded(
@@ -66,7 +68,7 @@ Widget LoginForm(context) {
                     MaterialPageRoute(
                         builder: (context) => const FindTeacher()));
               },
-              child: const Text('Đăng nhập',
+              child: Text(type == "login" ? 'Đăng nhập' : 'Đăng ký',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             ))
           ],

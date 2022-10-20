@@ -7,14 +7,26 @@ class CourseModel {
 
   String level;
 
-  String title;
+  String name;
 
-  int totlalLessons;
+  List<TopicModel> topics;
+
+  String purpose;
+
+  String reason;
 
   CourseModel(
       {required this.imageUrl,
-      required this.title,
+      required this.name,
       required this.description,
       required this.level,
-      required this.totlalLessons});
+      required this.topics,
+      required this.purpose,
+      required this.reason});
+}
+
+class TopicModel {
+  String name;
+
+  TopicModel({required this.name});
 }
