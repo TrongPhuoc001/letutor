@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-Widget RoundButtonOutLined({child, onPressed}) {
+Widget RoundButtonOutLined(
+    {child, onPressed, round = 32.0, color = Colors.blue}) {
   return OutlinedButton(
     onPressed: onPressed,
     style: OutlinedButton.styleFrom(
-      side: const BorderSide(width: 1.0, color: Colors.blue),
+      side: BorderSide(width: 1.0, color: color),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(32.0),
+        borderRadius: BorderRadius.circular(round * 1.0),
       ),
     ),
     child: child,

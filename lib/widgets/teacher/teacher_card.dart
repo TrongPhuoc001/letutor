@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lettutor/ui/teacher/teacher_detail.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 
 import '../../model/teacher.dart';
 import '../round_button_outlined.dart';
 
-Widget TeacherCard(Teacher teacher) {
+Widget TeacherCard(Teacher teacher, context) {
   return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: const BoxDecoration(
@@ -24,7 +25,15 @@ Widget TeacherCard(Teacher teacher) {
                 children: [
                   Stack(
                     children: [
-                      TeacherShortInfo(teacher),
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (builder) =>
+                                        TeacherDetail(teacher: teacher)));
+                          },
+                          child: TeacherShortInfo(teacher)),
                       Positioned(
                           right: 0,
                           top: 0,

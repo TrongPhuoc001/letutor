@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/assets.dart';
 import 'package:lettutor/ui/menu/menu.dart';
+import 'package:lettutor/ui/teacher/find_teacher.dart';
 import 'package:lettutor/widgets/border_icon.dart';
 
 import '../model/user.dart';
@@ -42,7 +43,12 @@ Widget MainTheme({hideMenu = false, child, context, onMenu = false}) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Image.asset(Assets.logo, height: 40),
+        InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (builder) => const FindTeacher()));
+            },
+            child: Image.asset(Assets.logo, height: 40)),
         Spacer(),
         headerRight,
       ],

@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
-Widget RoundTextField({hintText}) {
-  return TextField(
+Widget RoundTextField(
+    {hintText, round = 20.0, initValue = "", onChanged, enabled = true}) {
+  return TextFormField(
+    initialValue: initValue,
+    onChanged: onChanged,
+    enabled: enabled,
     decoration: InputDecoration(
       isDense: true,
+      fillColor: enabled ? Colors.white : Color.fromARGB(255, 163, 15, 15),
       contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-      border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+      border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(round * 1.0)),
           gapPadding: 0,
-          borderSide: BorderSide(color: Color.fromRGBO(233, 233, 233, 1))),
+          borderSide:
+              const BorderSide(color: Color.fromRGBO(233, 233, 233, 1))),
       hintText: hintText,
       hintStyle: const TextStyle(
           color: Color.fromRGBO(215, 215, 215, 1),

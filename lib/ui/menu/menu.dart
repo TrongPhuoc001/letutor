@@ -6,6 +6,8 @@ import 'package:lettutor/ui/courses/course.dart';
 import 'package:lettutor/ui/login/login.dart';
 import 'package:lettutor/ui/my_app.dart';
 import 'package:lettutor/ui/profile/profile.dart';
+import 'package:lettutor/ui/schedule/schedule_history.dart';
+import 'package:lettutor/ui/schedule/shedule.dart';
 import 'package:lettutor/ui/teacher/find_teacher.dart';
 import 'package:lettutor/widgets/border_icon.dart';
 
@@ -25,9 +27,9 @@ class Menu extends StatelessWidget {
       const MenuItem(
           title: 'Gia sư', icon: Icons.assessment, navigate: FindTeacher()),
       const MenuItem(
-          title: 'Lịch học', icon: Icons.today, navigate: FindTeacher()),
+          title: 'Lịch học', icon: Icons.today, navigate: Schedule()),
       const MenuItem(
-          title: 'Lịch sử', icon: Icons.history, navigate: FindTeacher()),
+          title: 'Lịch sử', icon: Icons.history, navigate: ScheduleHistory()),
       const MenuItem(title: 'Khóa học', icon: Icons.school, navigate: Course()),
       const MenuItem(
           title: 'Khóa học của tôi',

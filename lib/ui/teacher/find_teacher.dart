@@ -61,7 +61,7 @@ class FindTeacher extends StatelessWidget {
             "Gia sư được đề xuất",
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
-          TeacherList(teacherList)
+          TeacherList(teacherList, context)
         ]));
   }
 }
