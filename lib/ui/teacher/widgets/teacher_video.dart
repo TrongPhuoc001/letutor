@@ -22,7 +22,6 @@ class _TeacherVideoState extends State<TeacherVideo> {
   @override
   void initState() {
     super.initState();
-    log('initState');
     videoController.addListener(() {
       if (videoController.value.isInitialized) {
         setState(() {
