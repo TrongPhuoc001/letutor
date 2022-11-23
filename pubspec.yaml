@@ -39,6 +39,9 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   google_fonts: ^3.0.1
   video_player: ^2.4.7
+  http: ^0.13.5
+  provider: ^6.0.4
+  google_sign_in: ^5.4.2
 
 dev_dependencies:
   flutter_test:

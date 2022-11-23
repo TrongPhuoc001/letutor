@@ -40,11 +40,12 @@ class Profile extends StatelessWidget {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 fit: BoxFit.fill,
-                                image: NetworkImage(user.avatar),
+                                image: NetworkImage(user.avatar!),
                               ),
                             ),
                           ),
-                          Text(user.name, style: const TextStyle(fontSize: 20)),
+                          Text(user.name!,
+                              style: const TextStyle(fontSize: 20)),
                           Text(
                             "ID: ${user.id}",
                             style: const TextStyle(color: Colors.grey),

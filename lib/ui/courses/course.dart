@@ -19,10 +19,10 @@ class Course extends StatelessWidget {
               "Let's discuss how technology is changing the way we live",
           level: "Intermediate",
           topics: [
-            TopicModel(name: 'The Internet'),
-            TopicModel(name: "Artidicial Intelligence"),
-            TopicModel(name: "Social Media"),
-            TopicModel(name: "Internet Privacy")
+            Topics(name: 'The Internet'),
+            Topics(name: "Artidicial Intelligence"),
+            Topics(name: "Social Media"),
+            Topics(name: "Internet Privacy")
           ],
           purpose:
               "You will learn vocabulary related to timely topics like remote work, artificial intelligence, online privacy, and more. In addition to discussion questions, you will practice intermediate level speaking tasks such as using data to describe trends.",

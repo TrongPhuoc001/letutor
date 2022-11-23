@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lettutor/ui/teacher/teacher_detail.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 
-import '../../model/teacher.dart';
+import '../../model/tutor.dart';
 import '../round_button_outlined.dart';
 
-Widget TeacherCard(Teacher teacher, context) {
+Widget TeacherCard(Tutor teacher, context) {
   return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: const BoxDecoration(
@@ -50,7 +49,8 @@ Widget TeacherCard(Teacher teacher, context) {
                     children: [
                       Expanded(
                           child: Wrap(
-                        children: teacher.tags
+                        children: teacher.specialties!
+                            .split(',')
                             .map((tag) => Padding(
                                   padding: EdgeInsets.only(right: 10),
                                   child: Chip(
@@ -71,7 +71,7 @@ Widget TeacherCard(Teacher teacher, context) {
                     children: [
                       Expanded(
                           child: Text(
-                        teacher.decription,
+                        teacher.bio!,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(

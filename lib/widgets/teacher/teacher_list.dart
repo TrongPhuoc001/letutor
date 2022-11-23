@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/widgets/teacher/teacher_card.dart';
 
-import '../../model/teacher.dart';
+import '../../model/tutor.dart';
 
-Widget TeacherList(List<Teacher> teacherList, context) {
+Widget TeacherList(List<Tutor> teacherList, context) {
   List<Widget> teacherCardList =
       teacherList.map((teacher) => TeacherCard(teacher, context)).toList();
   return Padding(

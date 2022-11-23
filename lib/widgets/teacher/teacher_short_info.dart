@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../model/teacher.dart';
+import '../../model/tutor.dart';
 
-Widget TeacherShortInfo(Teacher teacher, {contact = false, size = 60}) {
+Widget TeacherShortInfo(Tutor teacher, {contact = false, size = 60}) {
   return Row(
     children: [
       Container(
@@ -16,23 +16,23 @@ Widget TeacherShortInfo(Teacher teacher, {contact = false, size = 60}) {
           shape: BoxShape.circle,
           image: DecorationImage(
             fit: BoxFit.fill,
-            image: NetworkImage(teacher.avatarUrl),
+            image: NetworkImage(teacher.user!.avatar!),
           ),
         ),
       ),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(teacher.name,
+          Text(teacher.user!.name!,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           Row(
             children: [
               SizedBox(
                 width: 20,
                 height: 12,
-                child: SvgPicture.network(teacher.nation.flagUrl),
+                child: SvgPicture.network(teacher.user!.country!),
               ),
-              Text(teacher.nation.name,
+              Text(teacher.user!.country!,
                   style: TextStyle(fontSize: 14, color: Colors.grey))
             ],
           ),
@@ -54,7 +54,7 @@ Widget TeacherShortInfo(Teacher teacher, {contact = false, size = 60}) {
                     ],
                   ))
               : RatingBar.builder(
-                  initialRating: teacher.rating,
+                  initialRating: teacher.rating!,
                   itemBuilder: (context, _) =>
                       Icon(Icons.star, color: Colors.amber, size: 15),
                   onRatingUpdate: (r) {},

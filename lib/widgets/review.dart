@@ -80,7 +80,7 @@ Widget ReviewItem({required ReviewModel review}) {
           decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                  image: NetworkImage(review.user.avatar), fit: BoxFit.cover)),
+                  image: NetworkImage(review.user.avatar!), fit: BoxFit.cover)),
         ),
         Container(
           padding: EdgeInsets.only(left: 10),
@@ -89,7 +89,7 @@ Widget ReviewItem({required ReviewModel review}) {
             children: [
               Row(
                 children: [
-                  Text(review.user.name + ' ',
+                  Text('${review.user.name} ',
                       style: TextStyle(color: Colors.grey)),
                   Text(
                     DateTime.now()

@@ -6,8 +6,8 @@ class CourseDetail extends StatelessWidget {
   const CourseDetail({required this.course});
   final CourseModel course;
   Widget build(BuildContext context) {
-    List<Widget> topics = course.topics
-        .map((topic) => InkWell(
+    List<Widget>? topics = course.topics
+        ?.map((topic) => InkWell(
             onTap: () {},
             child: Row(
               children: [
@@ -21,12 +21,11 @@ class CourseDetail extends StatelessWidget {
                   child: Padding(
                       padding: const EdgeInsets.fromLTRB(20, 30, 20, 30),
                       child: Text(
-                          (course.topics.indexOf(topic) + 1).toString() +
-                              ". " +
-                              topic.name)),
+                          "${course.topics?.indexOf(topic)}. ${topic.name!}")),
                 )),
               ],
             )))
+        .cast<Widget>()
         .toList();
 
     return MainTheme(
@@ -43,17 +42,17 @@ class CourseDetail extends StatelessWidget {
               child: Column(children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
-                  child: Image.asset(course.imageUrl),
+                  child: Image.asset(course.imageUrl!),
                 ),
                 Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(children: [
-                      Text(course.name,
+                      Text(course.name!,
                           style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold)),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
-                        child: Text(course.description),
+                        child: Text(course.description!),
                       ),
                       Row(children: [
                         Expanded(
@@ -94,7 +93,7 @@ class CourseDetail extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-              child: Text(course.reason),
+              child: Text(course.reason!),
             ),
             Row(
               children: const [
@@ -111,7 +110,7 @@ class CourseDetail extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-              child: Text(course.purpose),
+              child: Text(course.purpose!),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
@@ -132,7 +131,7 @@ class CourseDetail extends StatelessWidget {
                   color: Color.fromRGBO(68, 100, 184, 1),
                 ),
                 Text(
-                  course.level,
+                  course.level!,
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.bold),
                 )
@@ -157,7 +156,7 @@ class CourseDetail extends StatelessWidget {
                   color: Color.fromRGBO(68, 100, 184, 1),
                 ),
                 Text(
-                  course.topics.length.toString() + " Chủ đề",
+                  course.topics!.length.toString() + " Chủ đề",
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.bold),
                 )
@@ -175,7 +174,7 @@ class CourseDetail extends StatelessWidget {
               ]),
             ),
             Column(
-              children: topics,
+              children: topics!,
             )
           ]),
         ));

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/model/review_model.dart';
-import 'package:lettutor/model/teacher.dart';
+import 'package:lettutor/model/tutor.dart';
 import 'package:lettutor/themes/main_theme.dart';
 import 'package:lettutor/ui/teacher/widgets/teacher_info.dart';
 import 'package:lettutor/ui/teacher/widgets/teacher_schedule.dart';
@@ -26,7 +26,7 @@ List<ReviewModel> rs = [
 class TeacherDetail extends StatefulWidget {
   TeacherDetail({Key? key, required this.teacher}) : super(key: key);
 
-  final Teacher teacher;
+  final Tutor teacher;
 
   @override
   _TeacherDetailState createState() => _TeacherDetailState();
