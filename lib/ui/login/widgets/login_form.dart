@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lettutor/api/auth/auth.api.dart';
+import 'package:lettutor/model/token_model.dart';
+import 'package:lettutor/model/user.dart';
 import 'package:lettutor/ui/forget_password/forget_password.dart';
 import 'package:lettutor/ui/my_app.dart';
 import 'package:lettutor/ui/teacher/find_teacher.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
   var type;
@@ -20,6 +25,16 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    SharedPreferences prefs = Provider.of<SharedPreferences>(context);
+    String? token = prefs.getString("tokens");
+    String? user = prefs.getString("user");
+    if (token != null && user != null) {
+      context.read<UserProvider>().login(User.fromJson(jsonDecode(user)),
+          TokenModel.fromJson(jsonDecode(token)));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => FindTeacher()));
+    }
+
     return Container(
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -86,6 +101,10 @@ class _LoginFormState extends State<LoginForm> {
                       context
                           .read<UserProvider>()
                           .login(loginResponse.user!, loginResponse.tokens!);
+                      prefs.setString(
+                          "tokens", jsonEncode(loginResponse.tokens!.toJson()));
+                      prefs.setString(
+                          "user", jsonEncode(loginResponse.user!.toJson()));
                       Navigator.push(
                           context,
                           MaterialPageRoute(

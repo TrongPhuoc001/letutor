@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/model/tutor.dart';
+import 'package:lettutor/model/tutor_short_info.dart';
 import 'package:lettutor/themes/main_theme.dart';
 import 'package:lettutor/widgets/home/banner.dart';
 import 'package:lettutor/widgets/home/filter.dart';
 import 'package:lettutor/widgets/teacher/teacher_list.dart';
 
-class FindTeacher extends StatelessWidget {
+class FindTeacher extends StatefulWidget {
   const FindTeacher({super.key});
 
   @override
+  _FindTeacherState createState() => _FindTeacherState();
+}
+
+class _FindTeacherState extends State<FindTeacher> {
+  List<TutorShortInfo> teacherList = [];
+  @override
   Widget build(BuildContext context) {
-    List<Tutor> teacherList = [];
     return MainTheme(
         context: context,
         child: Column(children: [

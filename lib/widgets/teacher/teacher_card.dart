@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/model/tutor_short_info.dart';
 import 'package:lettutor/ui/teacher/teacher_detail.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 
 import '../../model/tutor.dart';
 import '../round_button_outlined.dart';
 
-Widget TeacherCard(Tutor teacher, context) {
+Widget TeacherCard(TutorShortInfo teacher, context) {
   return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: const BoxDecoration(

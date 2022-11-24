@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lettutor/model/token_model.dart';
 import 'package:lettutor/model/user.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login/login.dart';
 
 class MyApp extends StatelessWidget {
@@ -10,14 +11,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => UserProvider(),
-      child: MaterialApp(
-        theme: ThemeData(
-            textTheme:
-                GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
-        home: Login(),
-      ),
+    return FutureBuilder(
+      future: SharedPreferences.getInstance(),
+      builder: ((context, snapshot) {
+        print(snapshot);
+        if (snapshot.hasData && snapshot.data != null) {
+          return MultiProvider(
+              providers: [
+                ChangeNotifierProvider(create: (context) => UserProvider()),
+                Provider<SharedPreferences>.value(value: snapshot.data!)
+              ],
+              child: MaterialApp(
+                theme: ThemeData(
+                    textTheme: GoogleFonts.poppinsTextTheme(
+                        Theme.of(context).textTheme)),
+                home: Login(),
+              ));
+        }
+        return const Center(child: CircularProgressIndicator());
+      }),
     );
   }
 }

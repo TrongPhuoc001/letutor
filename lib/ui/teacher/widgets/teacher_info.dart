@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/model/tutor.dart';
+import 'package:lettutor/model/tutor_short_info.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 
 class TeacherInfo extends StatefulWidget {
   const TeacherInfo({Key? key, required this.teacher}) : super(key: key);
-  final Tutor teacher;
+  final TutorShortInfo teacher;
 
   @override
   _TeacherInfoState createState() => _TeacherInfoState();

@@ -6,8 +6,6 @@ import 'package:lettutor/ui/teacher/find_teacher.dart';
 import 'package:lettutor/widgets/border_icon.dart';
 import 'package:provider/provider.dart';
 
-import '../model/user.dart';
-
 Widget MainTheme({hideMenu = false, child, context, onMenu = false}) {
   Widget headerRight = Row(
     children: [
