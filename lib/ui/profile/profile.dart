@@ -80,14 +80,14 @@ class Profile extends StatelessWidget {
                               title: "Quốc gia",
                               isImportant: true,
                               child: RoundTextField(
-                                  initValue: user.name, round: 5.0)),
+                                  initValue: user.country, round: 5.0)),
                           const SizedBox(height: 15),
                           //
                           LabelTextField(
                               title: "Số điện thoại",
                               isImportant: true,
                               child: RoundTextField(
-                                  initValue: "842499996508",
+                                  initValue: user.phone,
                                   round: 5.0,
                                   enabled: false)),
                           const SizedBox(height: 15),
@@ -96,21 +96,22 @@ class Profile extends StatelessWidget {
                               title: "Ngày sinh",
                               isImportant: true,
                               child: RoundTextField(
-                                  initValue: "1999-06-10", round: 5.0)),
+                                  initValue: user.birthday, round: 5.0)),
                           const SizedBox(height: 15),
                           //
                           LabelTextField(
                               title: "Trình độ",
                               isImportant: true,
                               child: RoundTextField(
-                                  initValue: "Pre A1", round: 5.0)),
+                                  initValue: user.level, round: 5.0)),
                           const SizedBox(height: 15),
                           //
                           LabelTextField(
                               title: "Muốn học",
                               isImportant: true,
                               child: RoundTextField(
-                                  initValue: "Business English", round: 5.0)),
+                                  initValue: user.learnTopics![0].name,
+                                  round: 5.0)),
                           const SizedBox(height: 15),
                           //
                           LabelTextField(

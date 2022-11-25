@@ -15,7 +15,7 @@ class FavoriteTutor {
   bool? isActivated;
   String? isPhoneActivated;
   String? requireNote;
-  String? timezone;
+  int? timezone;
   String? phoneAuth;
   bool? isPhoneAuthActivated;
   String? studySchedule;

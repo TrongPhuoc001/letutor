@@ -53,7 +53,13 @@ class Menu extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
-                  borderIcon(Image.network(user.avatar!), padding: 0, size: 20),
+                  borderIcon(
+                      Image.network(
+                        user.avatar!,
+                        fit: BoxFit.contain,
+                      ),
+                      padding: 0,
+                      size: 20),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: Text(

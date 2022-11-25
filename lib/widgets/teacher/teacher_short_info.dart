@@ -6,15 +6,23 @@ import 'package:lettutor/model/tutor_short_info.dart';
 Widget TeacherShortInfo(TutorShortInfo teacher, {contact = false, size = 60}) {
   return Row(
     children: [
-      Container(
-        width: size * 1.0,
-        height: size * 1.0,
-        margin: EdgeInsets.only(right: 10),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: NetworkImage(teacher.avatar!),
+      Padding(
+        padding: EdgeInsets.only(right: 10),
+        child: ClipOval(
+          child: Image.network(
+            teacher.avatar != null
+                ? teacher.avatar!
+                : 'https://www.lewesac.co.uk/wp-content/uploads/2017/12/default-avatar.jpg',
+            width: 50,
+            height: 50,
+            fit: BoxFit.scaleDown,
+            errorBuilder: (context, error, stackTrace) {
+              return Image.network(
+                  'https://www.lewesac.co.uk/wp-content/uploads/2017/12/default-avatar.jpg',
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.fill);
+            },
           ),
         ),
       ),
@@ -25,12 +33,12 @@ Widget TeacherShortInfo(TutorShortInfo teacher, {contact = false, size = 60}) {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           Row(
             children: [
-              SizedBox(
-                width: 20,
-                height: 12,
-                child: SvgPicture.network(teacher.country!),
-              ),
-              Text(teacher.country!,
+              // SizedBox(
+              //   width: 20,
+              //   height: 12,
+              //   child: SvgPicture.network(teacher.country!),
+              // ),
+              Text(teacher.country != null ? teacher.country! : 'Vietnam',
                   style: TextStyle(fontSize: 14, color: Colors.grey))
             ],
           ),
@@ -51,14 +59,16 @@ Widget TeacherShortInfo(TutorShortInfo teacher, {contact = false, size = 60}) {
                           style: TextStyle(color: Colors.blue, fontSize: 14))
                     ],
                   ))
-              : RatingBar.builder(
-                  initialRating: double.parse(teacher.rating!),
-                  itemBuilder: (context, _) =>
-                      Icon(Icons.star, color: Colors.amber, size: 15),
-                  onRatingUpdate: (r) {},
-                  ignoreGestures: true,
-                  itemSize: 20,
-                ),
+              : teacher.rating != null
+                  ? RatingBar.builder(
+                      initialRating: double.parse(teacher.rating!),
+                      itemBuilder: (context, _) =>
+                          Icon(Icons.star, color: Colors.amber, size: 15),
+                      onRatingUpdate: (r) {},
+                      ignoreGestures: true,
+                      itemSize: 20,
+                    )
+                  : Text('No rating'),
         ],
       )
     ],

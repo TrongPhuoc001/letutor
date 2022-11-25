@@ -26,15 +26,6 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     SharedPreferences prefs = Provider.of<SharedPreferences>(context);
-    String? token = prefs.getString("tokens");
-    String? user = prefs.getString("user");
-    if (token != null && user != null) {
-      context.read<UserProvider>().login(User.fromJson(jsonDecode(user)),
-          TokenModel.fromJson(jsonDecode(token)));
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => FindTeacher()));
-    }
-
     return Container(
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

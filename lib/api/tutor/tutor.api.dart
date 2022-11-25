@@ -86,7 +86,9 @@ class FavoriteTutorResponse {
     secondId = json['secondId'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    secondInfo = FavoriteTutor.fromJson(json['secondInfo']);
+    secondInfo = json['secondInfo'] != null
+        ? new FavoriteTutor.fromJson(json['secondInfo'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -102,23 +104,29 @@ class FavoriteTutorResponse {
 }
 
 class TutorApi {
-  String URL = 'https://sandbox.api.lettutor.com/tutor/';
+  static String URL = 'https://sandbox.api.lettutor.com/tutor/';
 
-  Future<TutorMoreResponse> getTutors(int page) async {
+  static Future<TutorMoreResponse> getMoreTutors(int page) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? tokens = prefs.getString('tokens');
     TokenModel tokenModel = TokenModel.fromJson(jsonDecode(tokens!));
-    var res = await http
-        .get(Uri.parse(URL + 'tutor/more?perPage=9&page=$page'), headers: {
+    var res =
+        await http.get(Uri.parse('${URL}more?perPage=9&page=$page'), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'authorization': 'Bearer${tokenModel.access?.token}',
+      'authorization': 'Bearer ${tokenModel.access?.token}',
     });
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
-      var tutorMoreResponse = TutorMoreResponse.fromJson(data);
-      return tutorMoreResponse;
+      try {
+        var tutorMoreResponse = TutorMoreResponse.fromJson(data);
+        return tutorMoreResponse;
+      } catch (e) {
+        print(e);
+        return throw Exception('Failed to load tutors');
+      }
     } else {
+      print(res.body);
       throw Exception('Failed to load tutors');
     }
   }
