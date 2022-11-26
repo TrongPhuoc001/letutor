@@ -56,7 +56,7 @@ class Menu extends StatelessWidget {
                   borderIcon(
                       Image.network(
                         user.avatar!,
-                        fit: BoxFit.contain,
+                        fit: BoxFit.fill,
                       ),
                       padding: 0,
                       size: 20),

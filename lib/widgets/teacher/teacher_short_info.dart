@@ -61,7 +61,7 @@ Widget TeacherShortInfo(TutorShortInfo teacher, {contact = false, size = 60}) {
                   ))
               : teacher.rating != null
                   ? RatingBar.builder(
-                      initialRating: double.parse(teacher.rating!),
+                      initialRating: teacher.rating!,
                       itemBuilder: (context, _) =>
                           Icon(Icons.star, color: Colors.amber, size: 15),
                       onRatingUpdate: (r) {},

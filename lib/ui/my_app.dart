@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lettutor/constants/specialty.dart';
 import 'package:lettutor/model/token_model.dart';
 import 'package:lettutor/model/user.dart';
 import 'package:lettutor/ui/teacher/find_teacher.dart';
@@ -20,13 +21,29 @@ class MyApp extends StatelessWidget {
         if (snapshot.hasData && snapshot.data != null) {
           String? userData = snapshot.data!.getString("user");
           String? tokensData = snapshot.data!.getString("tokens");
-          User user = User.fromJson(jsonDecode(userData!));
-          TokenModel tokens = TokenModel.fromJson(jsonDecode(tokensData!));
+          User? user;
+          TokenModel? tokens;
+          if (userData != null && tokensData != null) {
+            user = User.fromJson(jsonDecode(userData!));
+            tokens = TokenModel.fromJson(jsonDecode(tokensData!));
+            if (tokens.access != null && tokens.access!.expires != null) {
+              String accessExpries = tokens.access!.expires!;
+              if (DateTime.parse(accessExpries).isBefore(DateTime.now())) {
+                user = null;
+                tokens = null;
+              }
+            }
+          } else {
+            user = null;
+            tokens = null;
+          }
+
           return MultiProvider(
               providers: [
                 ChangeNotifierProvider(
                     create: (context) =>
                         UserProvider(user: user, tokens: tokens)),
+                ChangeNotifierProvider(create: (_) => FilterProvider()),
                 Provider<SharedPreferences>.value(value: snapshot.data!)
               ],
               child: MaterialApp(
@@ -53,9 +70,12 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void logout() {
+  void logout() async {
     this.user = null;
     this.tokens = null;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("user");
+    prefs.remove("tokens");
     notifyListeners();
   }
 
@@ -64,4 +84,46 @@ class UserProvider extends ChangeNotifier {
   User get currentUser => user!;
 
   String? get accessToken => tokens!.access!.token;
+}
+
+class FilterProvider extends ChangeNotifier {
+  static String? search;
+  static String? nation;
+  static DateTime? date;
+  static DateTimeRange? time;
+  static Specialty? specialties;
+
+  void updateSearch(String? search) {
+    FilterProvider.search = search;
+    notifyListeners();
+  }
+
+  void updateNation(String? nation) {
+    FilterProvider.nation = nation;
+    notifyListeners();
+  }
+
+  void updateDate(DateTime? date) {
+    FilterProvider.date = date;
+    notifyListeners();
+  }
+
+  void updateTime(DateTimeRange? time) {
+    FilterProvider.time = time;
+    notifyListeners();
+  }
+
+  void updateSpecialties(Specialty? specialties) {
+    FilterProvider.specialties = specialties;
+    notifyListeners();
+  }
+
+  void clear() {
+    FilterProvider.search = null;
+    FilterProvider.nation = null;
+    FilterProvider.date = null;
+    FilterProvider.time = null;
+    FilterProvider.specialties = null;
+    notifyListeners();
+  }
 }

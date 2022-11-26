@@ -39,7 +39,7 @@ class TutorShortInfo {
   String? languages;
   String? specialties;
   String? resume;
-  String? rating;
+  double? rating;
   String? isNative;
   int? price;
   bool? isOnline;
@@ -117,7 +117,9 @@ class TutorShortInfo {
     updatedAt = json['updatedAt'];
     deletedAt = json['deletedAt'];
     studentGroupId = json['studentGroupId'];
-    feedbacks = json['feedbacks'].cast<String>();
+    if (json['feedbacks'] != null) {
+      feedbacks = json['feedbacks'].cast<String>();
+    }
     id = json['id'];
     userId = json['userId'];
     video = json['video'];

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/constants/specialty.dart';
 import 'package:lettutor/model/tutor_short_info.dart';
 import 'package:lettutor/ui/teacher/teacher_detail.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
@@ -6,7 +7,7 @@ import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 import '../../model/tutor.dart';
 import '../round_button_outlined.dart';
 
-Widget TeacherCard(TutorShortInfo teacher, context) {
+Widget TeacherCard(TutorShortInfo teacher, context, {isFavorite = false}) {
   return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: const BoxDecoration(
@@ -38,9 +39,11 @@ Widget TeacherCard(TutorShortInfo teacher, context) {
                           right: 0,
                           top: 0,
                           child: IconButton(
-                            icon: const Icon(
-                              Icons.favorite_border,
-                              color: Colors.blue,
+                            icon: Icon(
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFavorite ? Colors.red : Colors.blue,
                             ),
                             onPressed: () {},
                           ))
@@ -55,7 +58,9 @@ Widget TeacherCard(TutorShortInfo teacher, context) {
                             .map((tag) => Padding(
                                   padding: EdgeInsets.only(right: 10),
                                   child: Chip(
-                                    label: Text(tag),
+                                    label: Text(SPECIALTIES[tag] != null
+                                        ? SPECIALTIES[tag]!
+                                        : tag),
                                     backgroundColor:
                                         Color.fromRGBO(0, 113, 240, 0.1),
                                     labelStyle: const TextStyle(

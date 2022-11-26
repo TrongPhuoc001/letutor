@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/tutor.dart';
 import 'package:http/http.dart' as http;
 
+import '../../ui/my_app.dart';
+
 class TutorMoreResponse {
   Tutors? tutors;
   List<FavoriteTutorResponse>? favoriteTutor;
@@ -103,6 +105,58 @@ class FavoriteTutorResponse {
   }
 }
 
+class SearchRequestPayload {
+  Filters? filters;
+  String? page;
+  int? perPage;
+  String? search;
+
+  SearchRequestPayload({this.filters, this.page, this.perPage, this.search});
+
+  SearchRequestPayload.fromJson(Map<String, dynamic> json) {
+    filters =
+        json['filters'] != null ? new Filters.fromJson(json['filters']) : null;
+    page = json['page'];
+    perPage = json['perPage'];
+    search = json['search'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.filters != null) {
+      data['filters'] = this.filters!.toJson();
+    }
+    data['page'] = this.page;
+    data['perPage'] = this.perPage;
+    if (this.search != null) {
+      data['search'] = this.search;
+    }
+    return data;
+  }
+}
+
+class Filters {
+  String? date;
+  List<String>? specialties;
+  List<int>? tutoringTimeAvailable;
+
+  Filters({this.date, this.specialties, this.tutoringTimeAvailable});
+
+  Filters.fromJson(Map<String, dynamic> json) {
+    date = json['date'];
+    specialties = json['specialties'].cast<String>();
+    tutoringTimeAvailable = json['tutoringTimeAvailable'].cast<int>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['date'] = this.date;
+    data['specialties'] = this.specialties;
+    data['tutoringTimeAvailable'] = this.tutoringTimeAvailable;
+    return data;
+  }
+}
+
 class TutorApi {
   static String URL = 'https://sandbox.api.lettutor.com/tutor/';
 
@@ -110,8 +164,8 @@ class TutorApi {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? tokens = prefs.getString('tokens');
     TokenModel tokenModel = TokenModel.fromJson(jsonDecode(tokens!));
-    var res =
-        await http.get(Uri.parse('${URL}more?perPage=9&page=$page'), headers: {
+    String url = '${URL}more?perPage=9&page=$page';
+    var res = await http.get(Uri.parse(url), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'authorization': 'Bearer ${tokenModel.access?.token}',
@@ -125,8 +179,63 @@ class TutorApi {
         print(e);
         return throw Exception('Failed to load tutors');
       }
+    } else if (res.statusCode == 401) {
+      prefs.remove("tokens");
+      prefs.remove("user");
+      throw Exception('Unauthorized');
     } else {
       print(res.body);
+      throw Exception('Failed to load tutors');
+    }
+  }
+
+  static Future<TutorMoreResponse> searchTutors() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? tokens = prefs.getString('tokens');
+    TokenModel tokenModel = TokenModel.fromJson(jsonDecode(tokens!));
+    print(SearchRequestPayload(
+            filters: Filters(
+              specialties: FilterProvider.specialties != null
+                  ? [FilterProvider.specialties!.key!]
+                  : null,
+            ),
+            page: '1',
+            perPage: 9,
+            search: FilterProvider.search)
+        .toJson());
+    var res = await http.post(Uri.parse("${URL}search"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'authorization': 'Bearer ${tokenModel.access?.token}',
+        },
+        body: jsonEncode(SearchRequestPayload(
+                filters: Filters(
+                  specialties: FilterProvider.specialties != null
+                      ? [FilterProvider.specialties!.key!]
+                      : null,
+                ),
+                page: '1',
+                perPage: 9,
+                search: FilterProvider.search)
+            .toJson()));
+    if (res.statusCode == 200) {
+      var data = jsonDecode(res.body);
+      try {
+        var tutorsResponse = Tutors.fromJson(data);
+        print(tutorsResponse.rows!.length);
+        TutorMoreResponse tutorMoreResponse =
+            TutorMoreResponse(tutors: tutorsResponse);
+        return tutorMoreResponse;
+      } catch (e) {
+        print(e);
+        return throw Exception('Failed to load tutors');
+      }
+    } else if (res.statusCode == 401) {
+      prefs.remove("tokens");
+      prefs.remove("user");
+      throw Exception('Unauthorized');
+    } else {
       throw Exception('Failed to load tutors');
     }
   }
