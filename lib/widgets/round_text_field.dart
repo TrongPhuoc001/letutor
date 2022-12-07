@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
 Widget RoundTextField(
-    {hintText, round = 20.0, initValue = "", onChanged, enabled = true}) {
+    {hintText,
+    round = 20.0,
+    initValue = "",
+    onChanged,
+    enabled = true,
+    controller}) {
   return TextFormField(
     initialValue: initValue,
     onChanged: onChanged,
+    controller: controller,
     enabled: enabled,
     decoration: InputDecoration(
       isDense: true,

@@ -101,7 +101,6 @@ class _LoginFormState extends State<LoginForm> {
                           MaterialPageRoute(
                               builder: (context) => const FindTeacher()));
                     } catch (err) {
-                      print(err);
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Đăng nhập thất bại")));
                     }

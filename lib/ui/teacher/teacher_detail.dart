@@ -1,28 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/api/tutor/tutor.api.dart';
 import 'package:lettutor/model/review_model.dart';
 import 'package:lettutor/model/tutor.dart';
 import 'package:lettutor/model/tutor_short_info.dart';
 import 'package:lettutor/themes/main_theme.dart';
+import 'package:lettutor/ui/teacher/widgets/review.dart';
 import 'package:lettutor/ui/teacher/widgets/teacher_info.dart';
 import 'package:lettutor/ui/teacher/widgets/teacher_schedule.dart';
 import 'package:lettutor/ui/teacher/widgets/teacher_video.dart';
-import 'package:lettutor/widgets/review.dart';
 
 import '../../model/user.dart';
 import '../../widgets/icon_text.dart';
 
-List<ReviewModel> rs = [
-  ReviewModel(
-      user: User(
-          id: "f569c202-7bbf-4620-af77-ecc1419a6b28",
-          avatar:
-              "https://sandbox.api.lettutor.com/avatar/f569c202-7bbf-4620-af77-ecc1419a6b28avatar1657037111897.jpg",
-          name: "Long Long",
-          email: 'student@lettutor.com'),
-      rating: 5,
-      comment: "abc",
-      createAt: DateTime(2022, 10, 22, 5, 30))
-];
+List<ReviewModel> rs = [];
 
 class TeacherDetail extends StatefulWidget {
   TeacherDetail({Key? key, required this.teacher}) : super(key: key);
@@ -44,174 +34,189 @@ class _TeacherDetailState extends State<TeacherDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return MainTheme(
-        context: context,
-        child: Stack(
-          alignment: AlignmentDirectional.topCenter,
-          children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return FutureBuilder(
+        future: TutorApi.getTutorDetail(widget.teacher.userId!),
+        builder: ((context, snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            Tutor tutorDetail = snapshot.data as Tutor;
+            return MainTheme(
+                context: context,
+                child: Stack(
+                  alignment: AlignmentDirectional.topCenter,
                   children: [
-                    TeacherInfo(teacher: widget.teacher),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconText(
-                          iconData: Icons.favorite_outline,
-                          title: "Yêu thích",
-                        ),
-                        IconText(
-                          iconData: Icons.report_outlined,
-                          title: "Báo cáo",
-                        ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              reviewVisible = true;
-                            });
-                          },
-                          child: IconText(
-                            iconData: Icons.star_outline,
-                            title: "Đánh giá",
-                          ),
-                        ),
-                      ],
-                    ),
-                    TeacherVideo(),
-                    Text(
-                      "Ngôn ngữ",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Chip(
-                            label: Text("English"),
-                            backgroundColor: Color.fromRGBO(0, 113, 240, 0.1),
-                            labelStyle: const TextStyle(
-                                color: Color.fromRGBO(0, 113, 240, 1),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Chip(
-                            label: Text("Janpanese"),
-                            backgroundColor: Color.fromRGBO(0, 113, 240, 0.1),
-                            labelStyle: const TextStyle(
-                                color: Color.fromRGBO(0, 113, 240, 1),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        )
-                      ],
-                    ),
-                    Text(
-                      "Chuyên ngành",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Chip(
-                            label: Text("Tiếng anh cho công việc"),
-                            backgroundColor: Color.fromRGBO(0, 113, 240, 0.1),
-                            labelStyle: const TextStyle(
-                                color: Color.fromRGBO(0, 113, 240, 1),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Chip(
-                            label: Text("IELTS"),
-                            backgroundColor: Color.fromRGBO(0, 113, 240, 0.1),
-                            labelStyle: const TextStyle(
-                                color: Color.fromRGBO(0, 113, 240, 1),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Chip(
-                            label: Text("PET"),
-                            backgroundColor: Color.fromRGBO(0, 113, 240, 0.1),
-                            labelStyle: const TextStyle(
-                                color: Color.fromRGBO(0, 113, 240, 1),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        )
-                      ],
-                    ),
-                    Text(
-                      "Khóa học tham khảo",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Column(
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TeacherInfo(teacher: widget.teacher),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(children: [
-                                    Text("Basic Conversation Topics:",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w900)),
-                                    TextButton(
-                                        onPressed: () {},
-                                        child: Text("Tìm hiểu"))
-                                  ]),
+                                InkWell(
+                                    onTap: () {},
+                                    child: Column(
+                                      children: [
+                                        tutorDetail.isFavorite!
+                                            ? Icon(
+                                                Icons.favorite,
+                                                color: Colors.red,
+                                              )
+                                            : Icon(
+                                                Icons.favorite_border,
+                                                color: Colors.blue,
+                                              ),
+                                        Text("Yêu thích",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: tutorDetail.isFavorite!
+                                                    ? Colors.red
+                                                    : Colors.blue,
+                                                fontWeight: FontWeight.w500))
+                                      ],
+                                    )),
+                                IconText(
+                                  iconData: Icons.report_outlined,
+                                  title: "Báo cáo",
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      reviewVisible = true;
+                                    });
+                                  },
+                                  child: IconText(
+                                    iconData: Icons.star_outline,
+                                    title: "Đánh giá",
+                                  ),
                                 ),
                               ],
-                            )),
-                      ],
+                            ),
+                            TeacherVideo(videoUrl: tutorDetail.video),
+                            Text(
+                              "Ngôn ngữ",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Wrap(
+                              children: [
+                                ...tutorDetail.languages!
+                                    .split(',')
+                                    .map((l) => Padding(
+                                          padding: EdgeInsets.only(left: 10),
+                                          child: Chip(
+                                            label: Text(l),
+                                            backgroundColor: Color.fromRGBO(
+                                                0, 113, 240, 0.1),
+                                            labelStyle: const TextStyle(
+                                                color: Color.fromRGBO(
+                                                    0, 113, 240, 1),
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ))
+                                    .toList(),
+                              ],
+                            ),
+                            Text(
+                              "Chuyên ngành",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Wrap(
+                              children: [
+                                ...tutorDetail.specialties!
+                                    .split(',')
+                                    .map(((e) => Padding(
+                                          padding: EdgeInsets.only(left: 10),
+                                          child: Chip(
+                                            label: Text(e),
+                                            backgroundColor: Color.fromRGBO(
+                                                0, 113, 240, 0.1),
+                                            labelStyle: const TextStyle(
+                                                color: Color.fromRGBO(
+                                                    0, 113, 240, 1),
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        )))
+                                    .toList(),
+                              ],
+                            ),
+                            Text(
+                              "Khóa học tham khảo",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ...tutorDetail.user!.courses!
+                                            .map(
+                                              (e) => Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    20, 0, 5, 0),
+                                                child: Row(children: [
+                                                  Text(e.name!,
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w900)),
+                                                  TextButton(
+                                                      onPressed: () {},
+                                                      child: Text("Tìm hiểu"))
+                                                ]),
+                                              ),
+                                            )
+                                            .toList()
+                                      ],
+                                    )),
+                              ],
+                            ),
+                            Text(
+                              "Sở thích",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Text(
+                                tutorDetail.interests!,
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            Text(
+                              "Kinh nghiệm giảng dạy",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Text(
+                                tutorDetail.experience!,
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            TeacherSchedule()
+                          ]),
                     ),
-                    Text(
-                      "Sở thích",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        "I loved the weather, the scenery and the laid-back lifestyle of the locals.",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    Text(
-                      "Kinh nghiệm giảng dạy",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        "I have more than 10 years of teaching english experience",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    TeacherSchedule()
-                  ]),
-            ),
-            Review(
-                isVisible: reviewVisible,
-                reviews: rs,
-                onClose: handleReviewClose)
-          ],
-        ));
+                    Review(
+                      isVisible: reviewVisible,
+                      onClose: handleReviewClose,
+                      tutorId: tutorDetail.user!.id!,
+                    )
+                  ],
+                ));
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        }));
   }
 }

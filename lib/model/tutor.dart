@@ -51,7 +51,7 @@ class Tutor {
     isNative = json['isNative'];
     user = json['User'] != null ? new User.fromJson(json['User']) : null;
     isFavorite = json['isFavorite'];
-    avgRating = json['avgRating'];
+    avgRating = (json['avgRating'] / 1);
     totalFeedback = json['totalFeedback'];
   }
 

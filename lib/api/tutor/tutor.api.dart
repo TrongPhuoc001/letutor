@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:lettutor/api/base.api.dart';
 import 'package:lettutor/model/favorite_tutor.dart';
+import 'package:lettutor/model/review_model.dart';
 import 'package:lettutor/model/token_model.dart';
 import 'package:lettutor/model/tutor_short_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -157,86 +159,108 @@ class Filters {
   }
 }
 
+class ReviewResponse {
+  int? count;
+  List<ReviewModel>? rows;
+
+  ReviewResponse({this.count, this.rows});
+
+  ReviewResponse.fromJson(Map<String, dynamic> json) {
+    count = json['count'];
+    if (json['rows'] != null) {
+      rows = <ReviewModel>[];
+      json['rows'].forEach((v) {
+        rows!.add(new ReviewModel.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['count'] = this.count;
+    if (this.rows != null) {
+      data['rows'] = this.rows!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
 class TutorApi {
-  static String URL = 'https://sandbox.api.lettutor.com/tutor/';
+  static String URL = 'tutor/';
 
   static Future<TutorMoreResponse> getMoreTutors(int page) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? tokens = prefs.getString('tokens');
-    TokenModel tokenModel = TokenModel.fromJson(jsonDecode(tokens!));
     String url = '${URL}more?perPage=9&page=$page';
-    var res = await http.get(Uri.parse(url), headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'authorization': 'Bearer ${tokenModel.access?.token}',
-    });
+    var res = await BaseApi.get(url);
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
       try {
         var tutorMoreResponse = TutorMoreResponse.fromJson(data);
         return tutorMoreResponse;
       } catch (e) {
-        print(e);
         return throw Exception('Failed to load tutors');
       }
-    } else if (res.statusCode == 401) {
-      prefs.remove("tokens");
-      prefs.remove("user");
-      throw Exception('Unauthorized');
     } else {
-      print(res.body);
       throw Exception('Failed to load tutors');
     }
   }
 
   static Future<TutorMoreResponse> searchTutors() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? tokens = prefs.getString('tokens');
-    TokenModel tokenModel = TokenModel.fromJson(jsonDecode(tokens!));
-    print(SearchRequestPayload(
-            filters: Filters(
-              specialties: FilterProvider.specialties != null
-                  ? [FilterProvider.specialties!.key!]
-                  : null,
-            ),
-            page: '1',
-            perPage: 9,
-            search: FilterProvider.search)
-        .toJson());
-    var res = await http.post(Uri.parse("${URL}search"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'authorization': 'Bearer ${tokenModel.access?.token}',
-        },
-        body: jsonEncode(SearchRequestPayload(
+    var res = await BaseApi.post(
+        "${URL}search",
+        SearchRequestPayload(
                 filters: Filters(
-                  specialties: FilterProvider.specialties != null
+                  specialties: (FilterProvider.specialties != null &&
+                          FilterProvider.specialties!.key != null)
                       ? [FilterProvider.specialties!.key!]
-                      : null,
+                      : [],
                 ),
                 page: '1',
                 perPage: 9,
                 search: FilterProvider.search)
-            .toJson()));
+            .toJson());
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
       try {
         var tutorsResponse = Tutors.fromJson(data);
-        print(tutorsResponse.rows!.length);
         TutorMoreResponse tutorMoreResponse =
             TutorMoreResponse(tutors: tutorsResponse);
         return tutorMoreResponse;
       } catch (e) {
-        print(e);
         return throw Exception('Failed to load tutors');
       }
-    } else if (res.statusCode == 401) {
-      prefs.remove("tokens");
-      prefs.remove("user");
-      throw Exception('Unauthorized');
     } else {
       throw Exception('Failed to load tutors');
+    }
+  }
+
+  static Future<Tutor> getTutorDetail(String tutorId) async {
+    var res = await BaseApi.get("${URL}${tutorId}");
+    if (res.statusCode == 200) {
+      var data = jsonDecode(res.body);
+      try {
+        var tutor = Tutor.fromJson(data);
+        return tutor;
+      } catch (e) {
+        throw Exception('Failed to load tutors');
+      }
+    } else {
+      throw Exception('Failed to load tutors');
+    }
+  }
+
+  static Future<ReviewResponse> getTutorReview(String tutorId, int page) async {
+    var res = await BaseApi.get("feedback/v2/${tutorId}?perPage=10&page=$page");
+    if (res.statusCode == 200) {
+      var data = jsonDecode(res.body);
+      try {
+        ReviewResponse reviews = ReviewResponse.fromJson(data["data"]);
+        return reviews;
+      } catch (e) {
+        print(e);
+        throw Exception('Failed to load tutors review');
+      }
+    } else {
+      throw Exception('Failed to load tutors review');
     }
   }
 }

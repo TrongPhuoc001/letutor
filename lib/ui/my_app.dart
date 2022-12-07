@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lettutor/api/base.api.dart';
 import 'package:lettutor/constants/specialty.dart';
 import 'package:lettutor/model/token_model.dart';
 import 'package:lettutor/model/user.dart';
@@ -38,6 +39,8 @@ class MyApp extends StatelessWidget {
             tokens = null;
           }
 
+          BaseApi.tokenModel = tokens!;
+
           return MultiProvider(
               providers: [
                 ChangeNotifierProvider(
@@ -67,6 +70,7 @@ class UserProvider extends ChangeNotifier {
   void login(User user, TokenModel tokens) {
     this.user = user;
     this.tokens = tokens;
+    BaseApi.tokenModel = tokens;
     notifyListeners();
   }
 

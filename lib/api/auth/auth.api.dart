@@ -72,7 +72,6 @@ class AuthApi {
         body: jsonEncode(<String, String>{
           'email': email,
         }));
-    print(res.body);
     if (res.statusCode == 200) {
       return 'Success';
     } else {

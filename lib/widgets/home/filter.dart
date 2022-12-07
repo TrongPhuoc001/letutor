@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/ui/my_app.dart';
+import 'package:lettutor/widgets/multi_select_dialog.dart';
 import 'package:lettutor/widgets/round_text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +32,13 @@ class Fliter extends StatelessWidget {
                           context.read<FilterProvider>().updateSearch(v);
                         })),
                 Expanded(
-                    child: RoundTextField(hintText: "Chọn quốc tịch gia sư")),
+                    child: MultiSelectDialog(
+                        items: ['Bản ngữ', 'Việt nam', 'Nước ngoài'],
+                        onChanged: (v) {
+                          context.read<FilterProvider>().updateNation(v[0]);
+                        },
+                        selectedItems: [],
+                        title: "Chọn quốc tịch")),
               ],
             )),
         const Padding(
