@@ -38,8 +38,7 @@ class MyApp extends StatelessWidget {
             user = null;
             tokens = null;
           }
-
-          BaseApi.tokenModel = tokens!;
+          BaseApi.tokenModel = tokens ?? TokenModel();
 
           return MultiProvider(
               providers: [

@@ -101,8 +101,47 @@ class _LoginFormState extends State<LoginForm> {
                           MaterialPageRoute(
                               builder: (context) => const FindTeacher()));
                     } catch (err) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Đăng nhập thất bại")));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Đăng nhập thất bại. " + err.toString()),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        margin: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height - 100,
+                            right: 20,
+                            left: 20),
+                      ));
+                    }
+                    ;
+                  } else {
+                    try {
+                      LoginResponse loginResponse = await AuthApi.register(
+                          emailController.text, passwordController.text);
+                      context
+                          .read<UserProvider>()
+                          .login(loginResponse.user!, loginResponse.tokens!);
+                      prefs.setString(
+                          "tokens", jsonEncode(loginResponse.tokens!.toJson()));
+                      prefs.setString(
+                          "user", jsonEncode(loginResponse.user!.toJson()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const FindTeacher()));
+                    } catch (err) {
+                      print(err.toString());
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Đăng ký thất bại. " + err.toString()),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        margin: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height - 100,
+                            right: 20,
+                            left: 20),
+                      ));
                     }
                     ;
                   }

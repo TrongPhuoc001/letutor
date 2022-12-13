@@ -141,9 +141,9 @@ class Topics {
 class Categories {
   String? id;
   String? title;
-  Null? description;
+  String? description;
   String? key;
-  Null? displayOrder;
+  String? displayOrder;
   String? createdAt;
   String? updatedAt;
 

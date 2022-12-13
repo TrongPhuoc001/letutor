@@ -1,6 +1,8 @@
+import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lettutor/constants/languages.dart';
 import 'package:lettutor/model/tutor_short_info.dart';
 
 Widget TeacherShortInfo(TutorShortInfo teacher, {contact = false, size = 60}) {
@@ -33,12 +35,14 @@ Widget TeacherShortInfo(TutorShortInfo teacher, {contact = false, size = 60}) {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           Row(
             children: [
-              // SizedBox(
-              //   width: 20,
-              //   height: 12,
-              //   child: SvgPicture.network(teacher.country!),
-              // ),
-              Text(teacher.country != null ? teacher.country! : 'Vietnam',
+              teacher.country != null
+                  ? Flag.fromString(teacher.country!.toLowerCase(),
+                      height: 20, width: 30)
+                  : SizedBox(width: 30, height: 20),
+              Text(
+                  teacher.country != null
+                      ? (LANGUAGES[teacher.country!.toLowerCase()] ?? '')
+                      : 'Vietnam',
                   style: TextStyle(fontSize: 14, color: Colors.grey))
             ],
           ),

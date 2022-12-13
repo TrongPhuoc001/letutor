@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/widgets/round_button_outlined.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
+
+import '../../../widgets/common/button/round_button_outlined.dart';
 
 Widget ScheduleHistoryItem(scheduleItem) {
   return Container(

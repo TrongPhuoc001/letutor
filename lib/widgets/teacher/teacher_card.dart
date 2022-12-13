@@ -5,7 +5,7 @@ import 'package:lettutor/ui/teacher/teacher_detail.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 
 import '../../model/tutor.dart';
-import '../round_button_outlined.dart';
+import '../common/button/round_button_outlined.dart';
 
 Widget TeacherCard(TutorShortInfo teacher, context, {isFavorite = false}) {
   return Container(

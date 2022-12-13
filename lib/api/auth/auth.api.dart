@@ -45,7 +45,7 @@ class AuthApi {
     if (response.statusCode == 200) {
       return LoginResponse.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to login');
+      throw jsonDecode(response.body)['message'];
     }
   }
 
@@ -60,7 +60,7 @@ class AuthApi {
     if (response.statusCode == 200) {
       return LoginResponse.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to login');
+      throw jsonDecode(response.body)['message'];
     }
   }
 
@@ -77,5 +77,26 @@ class AuthApi {
     } else {
       throw Exception('Failed to send email');
     }
+  }
+
+  static Future<LoginResponse> register(String email, String password) {
+    return http
+        .post(Uri.parse(URL + 'register'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, dynamic>{
+              'email': email,
+              'password': password,
+              "source": null
+            }))
+        .then((response) {
+      if (response.statusCode == 200) {
+        return LoginResponse.fromJson(jsonDecode(response.body));
+      } else {
+        String message = jsonDecode(response.body)['message'];
+        throw message;
+      }
+    });
   }
 }

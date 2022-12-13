@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/api/tutor/tutor.api.dart';
+import 'package:lettutor/constants/languages.dart';
+import 'package:lettutor/constants/specialty.dart';
 import 'package:lettutor/model/review_model.dart';
 import 'package:lettutor/model/tutor.dart';
 import 'package:lettutor/model/tutor_short_info.dart';
@@ -105,7 +107,9 @@ class _TeacherDetailState extends State<TeacherDetail> {
                                     .map((l) => Padding(
                                           padding: EdgeInsets.only(left: 10),
                                           child: Chip(
-                                            label: Text(l),
+                                            label: Text(
+                                                LANGUAGES[l.toLowerCase()] ??
+                                                    ''),
                                             backgroundColor: Color.fromRGBO(
                                                 0, 113, 240, 0.1),
                                             labelStyle: const TextStyle(
@@ -130,7 +134,7 @@ class _TeacherDetailState extends State<TeacherDetail> {
                                     .map(((e) => Padding(
                                           padding: EdgeInsets.only(left: 10),
                                           child: Chip(
-                                            label: Text(e),
+                                            label: Text(SPECIALTIES[e] ?? ''),
                                             backgroundColor: Color.fromRGBO(
                                                 0, 113, 240, 0.1),
                                             labelStyle: const TextStyle(
@@ -204,7 +208,7 @@ class _TeacherDetailState extends State<TeacherDetail> {
                                 style: TextStyle(color: Colors.grey),
                               ),
                             ),
-                            TeacherSchedule()
+                            TeacherSchedule(tutor: widget.teacher)
                           ]),
                     ),
                     Review(
