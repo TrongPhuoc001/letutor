@@ -8,11 +8,23 @@ import 'package:provider/provider.dart';
 
 import '../../constants/specialty.dart';
 
-class Fliter extends StatelessWidget {
-  const Fliter({super.key});
+class Fliter extends StatefulWidget {
+  Fliter({super.key});
+
+  @override
+  State<Fliter> createState() => _FliterState();
+}
+
+class _FliterState extends State<Fliter> {
+  final FocusNode focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus) {
+        context.read<FilterProvider>().updateSearch();
+      }
+    });
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 30, 30, 10),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -27,10 +39,9 @@ class Fliter extends StatelessWidget {
               children: [
                 Expanded(
                     child: RoundTextField(
+                        focusNode: focusNode,
                         hintText: "Nhập tên gia sư...",
-                        onChanged: (v) {
-                          context.read<FilterProvider>().updateSearch(v);
-                        })),
+                        controller: FilterProvider.searchController)),
                 Expanded(
                     child: MultiSelectDialog(
                         items: ['Bản ngữ', 'Việt nam', 'Nước ngoài'],

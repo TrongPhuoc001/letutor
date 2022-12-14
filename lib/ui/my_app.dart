@@ -73,6 +73,11 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setUser(User user) {
+    this.user = user;
+    notifyListeners();
+  }
+
   void logout() async {
     this.user = null;
     this.tokens = null;
@@ -90,14 +95,13 @@ class UserProvider extends ChangeNotifier {
 }
 
 class FilterProvider extends ChangeNotifier {
-  static String? search;
+  static TextEditingController searchController = TextEditingController();
   static String? nation;
   static DateTime? date;
   static DateTimeRange? time;
   static Specialty? specialties;
 
-  void updateSearch(String? search) {
-    FilterProvider.search = search;
+  void updateSearch() {
     notifyListeners();
   }
 
@@ -121,8 +125,12 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  getSearchController() {
+    return FilterProvider.searchController;
+  }
+
   void clear() {
-    FilterProvider.search = null;
+    FilterProvider.searchController.text = '';
     FilterProvider.nation = null;
     FilterProvider.date = null;
     FilterProvider.time = null;

@@ -15,6 +15,7 @@ class User {
   List<CourseModel>? courses;
   String? level;
   List<LearnTopics>? learnTopics;
+  // List<LearnTopics>? testPreparations;
   bool? isPhoneActivated;
   int? timezone;
   bool? canSendMessage;
@@ -34,6 +35,7 @@ class User {
       this.courses,
       this.level,
       this.learnTopics,
+      // this.testPreparations,
       this.isPhoneActivated,
       this.timezone,
       this.canSendMessage});
@@ -67,6 +69,12 @@ class User {
         learnTopics!.add(new LearnTopics.fromJson(v));
       });
     }
+    // if (json['testPreparations' != null]) {
+    //   testPreparations = <LearnTopics>[];
+    //   json['testPreparations'].forEach((v) {
+    //     testPreparations!.add(new LearnTopics.fromJson(v));
+    //   });
+    // }
 
     isPhoneActivated = json['isPhoneActivated'];
     timezone = json['timezone'];
@@ -95,6 +103,11 @@ class User {
     if (this.learnTopics != null) {
       data['learnTopics'] = this.learnTopics!.map((v) => v.toJson()).toList();
     }
+
+    // if (this.testPreparations != null) {
+    //   data['testPreparations'] =
+    //       this.testPreparations!.map((v) => v.toJson()).toList();
+    // }
 
     data['isPhoneActivated'] = this.isPhoneActivated;
     data['timezone'] = this.timezone;

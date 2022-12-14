@@ -22,4 +22,9 @@ class BaseApi {
     return http.post(Uri.parse(URL + url),
         headers: headers, body: jsonEncode(data));
   }
+
+  static put(String url, dynamic data) {
+    return http.put(Uri.parse(URL + url),
+        headers: headers, body: jsonEncode(data));
+  }
 }

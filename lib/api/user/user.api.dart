@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:lettutor/api/base.api.dart';
+import 'package:lettutor/model/user.dart';
 import 'package:lettutor/ui/my_app.dart';
 
 class UserApi {
@@ -18,6 +20,32 @@ class UserApi {
       return 'Success';
     } else {
       throw Exception('Failed to send email');
+    }
+  }
+
+  static Future<User> updateUser({name, country, birthday, level}) async {
+    try {
+      var res = await BaseApi.put("user/info", {
+        'name': name,
+        'country': country,
+        'birthday': birthday,
+        'level': level,
+      });
+      if (res.statusCode == 200) {
+        print(jsonDecode(res.body));
+        try {
+          User u = User.fromJson(jsonDecode(res.body));
+          return u;
+        } catch (err) {
+          print(err);
+          throw Exception('Failed to update user');
+        }
+      } else {
+        throw Exception('Failed to update user');
+      }
+    } catch (err) {
+      print(err);
+      throw Exception('Failed to update user');
     }
   }
 }

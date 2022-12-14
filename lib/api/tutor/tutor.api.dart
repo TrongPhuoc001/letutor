@@ -216,7 +216,7 @@ class TutorApi {
                 ),
                 page: '1',
                 perPage: 9,
-                search: FilterProvider.search)
+                search: FilterProvider.searchController.text)
             .toJson());
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);

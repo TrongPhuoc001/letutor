@@ -98,7 +98,9 @@ class Menu extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    item.aditionalAction!();
+                    if (item.aditionalAction != null) {
+                      item.aditionalAction!();
+                    }
                     Navigator.push(context,
                         MaterialPageRoute(builder: (builder) => item.navigate));
                   },

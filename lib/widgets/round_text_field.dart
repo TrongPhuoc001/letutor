@@ -5,11 +5,16 @@ Widget RoundTextField(
     round = 20.0,
     initValue = "",
     onChanged,
+    onTap,
     enabled = true,
+    isReadOnly = false,
+    focusNode,
     controller}) {
   return TextFormField(
-    initialValue: initValue,
+    readOnly: isReadOnly,
     onChanged: onChanged,
+    onTap: onTap ?? null,
+    focusNode: focusNode,
     controller: controller,
     enabled: enabled,
     decoration: InputDecoration(

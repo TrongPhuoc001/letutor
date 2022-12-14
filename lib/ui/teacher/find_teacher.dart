@@ -23,7 +23,9 @@ class _FindTeacherState extends State<FindTeacher> {
   @override
   Widget build(BuildContext context) {
     context.watch<FilterProvider>().addListener(() {
-      if (FilterProvider.search == null && FilterProvider.specialties == null) {
+      print(FilterProvider.searchController.text);
+      if (FilterProvider.searchController.text == '' &&
+          FilterProvider.specialties == null) {
         setState(() {
           teacherList = TutorApi.getMoreTutors(page);
         });

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lettutor/model/course_model.dart';
 import 'package:lettutor/themes/main_theme.dart';
@@ -42,7 +43,11 @@ class CourseDetail extends StatelessWidget {
               child: Column(children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
-                  child: Image.asset(course.imageUrl!),
+                  child: CachedNetworkImage(
+                      imageUrl: course.imageUrl!,
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error)),
                 ),
                 Padding(
                     padding: const EdgeInsets.all(20),

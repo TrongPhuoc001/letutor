@@ -183,4 +183,5 @@ Map<String, String> LANGUAGES = {
   "yo": 'Yoruba',
   "za": 'Zhuang, Chuang',
   "zu": 'Zulu',
+  "qa": 'Quatar'
 };
