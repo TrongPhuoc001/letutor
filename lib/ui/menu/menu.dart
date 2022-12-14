@@ -26,7 +26,8 @@ class Menu extends StatelessWidget {
           title: 'Đổi mật khuẩu', icon: Icons.key, navigate: FindTeacher()),
       MenuItem(
           title: 'Gia sư', icon: Icons.assessment, navigate: FindTeacher()),
-      MenuItem(title: 'Lịch học', icon: Icons.today, navigate: Schedule()),
+      MenuItem(
+          title: 'Lịch học', icon: Icons.today, navigate: ScheduleScreen()),
       MenuItem(
           title: 'Lịch sử', icon: Icons.history, navigate: ScheduleHistory()),
       MenuItem(title: 'Khóa học', icon: Icons.school, navigate: Course()),

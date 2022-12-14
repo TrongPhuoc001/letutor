@@ -34,7 +34,7 @@ class UserApi {
       if (res.statusCode == 200) {
         print(jsonDecode(res.body));
         try {
-          User u = User.fromJson(jsonDecode(res.body));
+          User u = User.fromJson(jsonDecode(res.body)['user']);
           return u;
         } catch (err) {
           print(err);

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 
+import '../../../model/schedule_model.dart';
 import '../../../widgets/common/button/round_button_outlined.dart';
 
-Widget ScheduleHistoryItem(scheduleItem) {
+Widget ScheduleHistoryItem(Schedule scheduleItem) {
   return Container(
     padding: const EdgeInsets.all(10),
     margin: EdgeInsets.only(top: 20),
@@ -20,7 +21,9 @@ Widget ScheduleHistoryItem(scheduleItem) {
           Container(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             color: Colors.white,
-            child: TeacherShortInfo(scheduleItem.teacher, contact: true),
+            child: TeacherShortInfo(
+                scheduleItem.scheduleDetailInfo!.scheduleInfo!.tutorInfo!,
+                contact: true),
           ),
           const SizedBox(
             height: 20,

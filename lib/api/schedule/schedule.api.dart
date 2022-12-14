@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:lettutor/api/base.api.dart';
+import 'package:lettutor/model/schedule_model.dart';
 
 class ScheduleResponse {
   String? message;
@@ -195,6 +196,53 @@ class BookingInfo {
   }
 }
 
+class StudentScheduleResponse {
+  String? message;
+  Data? data;
+
+  StudentScheduleResponse({this.message, this.data});
+
+  StudentScheduleResponse.fromJson(Map<String, dynamic> json) {
+    message = json['message'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
+class Data {
+  int? count;
+  List<Schedule>? rows;
+
+  Data({this.count, this.rows});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    count = json['count'];
+    if (json['rows'] != null) {
+      rows = <Schedule>[];
+      json['rows'].forEach((v) {
+        rows!.add(new Schedule.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['count'] = this.count;
+    if (this.rows != null) {
+      data['rows'] = this.rows!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
 class ScheduleApi {
   static String URL = 'schedule/';
 
@@ -214,6 +262,29 @@ class ScheduleApi {
       }
     } catch (e) {
       print(e);
+      return throw Exception('Failed to load Schedule');
+    }
+  }
+
+  static Future<StudentScheduleResponse> getStudentSchedule(
+      {page, timestamp, isHistory}) async {
+    String url =
+        'booking/list/student?page=$page&perPage=10&${isHistory ? 'dateTimeLte=$timestamp' : 'dateTimeGte=$timestamp'}&orderBy=meeting&sortBy=desc';
+    try {
+      var res = await BaseApi.get(url);
+      if (res.statusCode == 200) {
+        try {
+          StudentScheduleResponse response =
+              StudentScheduleResponse.fromJson(json.decode(res.body));
+          return response;
+        } catch (err) {
+          print(err);
+          return throw Exception('Failed to load Schedule');
+        }
+      } else {
+        return throw Exception('Failed to load Schedule');
+      }
+    } catch (err) {
       return throw Exception('Failed to load Schedule');
     }
   }

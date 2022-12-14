@@ -1,4 +1,5 @@
 import 'package:lettutor/model/tutor.dart';
+import 'package:lettutor/model/tutor_short_info.dart';
 
 class Schedule {
   int? createdAtTimeStamp;
@@ -173,7 +174,7 @@ class ScheduleInfo {
   bool? isDeleted;
   String? createdAt;
   String? updatedAt;
-  Tutor? tutorInfo;
+  TutorShortInfo? tutorInfo;
 
   ScheduleInfo(
       {this.date,
@@ -200,7 +201,7 @@ class ScheduleInfo {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     tutorInfo = json['tutorInfo'] != null
-        ? new Tutor.fromJson(json['tutorInfo'])
+        ? new TutorShortInfo.fromJson(json['tutorInfo'])
         : null;
   }
 
