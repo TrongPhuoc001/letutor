@@ -118,7 +118,7 @@ class _LoginFormState extends State<LoginForm> {
                     ;
                   } else {
                     try {
-                      LoginResponse loginResponse = await AuthApi.register(
+                      await AuthApi.register(
                           emailController.text, passwordController.text);
                       notification(
                           context: context,

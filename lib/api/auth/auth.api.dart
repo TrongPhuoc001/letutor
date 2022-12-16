@@ -79,7 +79,7 @@ class AuthApi {
     }
   }
 
-  static Future<LoginResponse> register(String email, String password) {
+  static Future<dynamic> register(String email, String password) {
     return http
         .post(Uri.parse(URL + 'register'),
             headers: <String, String>{
@@ -91,8 +91,8 @@ class AuthApi {
               "source": null
             }))
         .then((response) {
-      if (response.statusCode == 200) {
-        return LoginResponse.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 201) {
+        return jsonDecode(response.body);
       } else {
         String message = jsonDecode(response.body)['message'];
         throw message;
