@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/api/schedule/schedule.api.dart';
 import 'package:lettutor/api/tutor/tutor.api.dart';
 import 'package:lettutor/model/favorite_tutor.dart';
 import 'package:lettutor/themes/main_theme.dart';
@@ -19,6 +20,12 @@ class FindTeacher extends StatefulWidget {
 class _FindTeacherState extends State<FindTeacher> {
   Future<TutorMoreResponse> teacherList = TutorApi.getMoreTutors(1);
   int page = 1;
+
+  Future<dynamic> getBannerInfo() async {
+    NextScheduleResponse stuSche = await ScheduleApi.getNextSchedule();
+    int total = await ScheduleApi.getTotalHours();
+    return [stuSche.data!, total];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +51,19 @@ class _FindTeacherState extends State<FindTeacher> {
             return MainTheme(
                 context: context,
                 child: Column(children: [
-                  HomeBanner(courseNumber: 0, totalLearned: 9275),
+                  FutureBuilder(
+                      future: getBannerInfo(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data != null) {
+                          List<dynamic> bannerInfo =
+                              snapshot.data as List<dynamic>;
+                          return HomeBanner(
+                              schedules: bannerInfo[0],
+                              totalLearned: bannerInfo[1]);
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }),
                   Fliter(),
                   const Padding(
                     padding: EdgeInsets.all(20),

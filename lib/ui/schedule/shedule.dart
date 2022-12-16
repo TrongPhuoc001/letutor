@@ -6,6 +6,9 @@ import 'package:lettutor/model/tutor.dart';
 import 'package:lettutor/themes/main_theme.dart';
 import 'package:lettutor/ui/schedule/widgets/header.dart';
 import 'package:lettutor/ui/schedule/widgets/schedule_item.dart';
+import 'package:lettutor/widgets/teacher/book_chedule_item.dart';
+
+import '../../widgets/home/pagination.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -25,11 +28,21 @@ class _ScheduleState extends State<ScheduleScreen> {
             timestamp: (now.microsecondsSinceEpoch / 1000).round(),
             isHistory: false),
         builder: (context, snapshot) {
-          print(snapshot.data);
           if (snapshot.hasData && snapshot.data != null) {
             StudentScheduleResponse data =
                 snapshot.data as StudentScheduleResponse;
             List<Schedule> schedules = data.data!.rows!;
+            schedules.sort((a, b) => a.scheduleDetailInfo!.startPeriodTimestamp!
+                .compareTo(b.scheduleDetailInfo!.startPeriodTimestamp!));
+            Map<String, List<Schedule>> scheduleMap = {};
+            schedules.forEach((schedule) {
+              String date = readTimestamp(
+                  schedule.scheduleDetailInfo!.startPeriodTimestamp!);
+              if (scheduleMap[date] == null) {
+                scheduleMap[date] = [];
+              }
+              scheduleMap[date]!.add(schedule);
+            });
             return MainTheme(
               context: context,
               child: Container(
@@ -53,7 +66,15 @@ class _ScheduleState extends State<ScheduleScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    ...schedules.map((schedule) => ScheduleItem(schedule)),
+                    ...scheduleMap.entries.map((e) => ScheduleItem(e.value)),
+                    Pagination(
+                        totalPage: (data.data!.count! / 10).ceil(),
+                        currentPage: page,
+                        onPageChanged: (value) {
+                          setState(() {
+                            page = value;
+                          });
+                        })
                   ],
                 ),
               ),

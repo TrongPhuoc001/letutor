@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/model/schedule_model.dart';
+import 'package:lettutor/widgets/teacher/book_chedule_item.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 
 import '../../../widgets/common/button/round_button_outlined.dart';
 
-Widget ScheduleItem(Schedule scheduleItem) {
+Widget ScheduleItem(List<Schedule> scheduleItems) {
   return Container(
     padding: const EdgeInsets.all(10),
     color: const Color.fromRGBO(241, 241, 241, 1),
@@ -12,16 +13,17 @@ Widget ScheduleItem(Schedule scheduleItem) {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "T6, 21 Thg 10 22",
+          Text(
+            readTimestamp(
+                scheduleItems[0].scheduleDetailInfo!.startPeriodTimestamp!),
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const Text("1 buổi học"),
+          Text("${scheduleItems.length} buổi học"),
           Container(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             color: Colors.white,
             child: TeacherShortInfo(
-                scheduleItem.scheduleDetailInfo!.scheduleInfo!.tutorInfo!,
+                scheduleItems[0].scheduleDetailInfo!.scheduleInfo!.tutorInfo!,
                 contact: true),
           ),
           const SizedBox(
@@ -32,27 +34,29 @@ Widget ScheduleItem(Schedule scheduleItem) {
             color: Colors.white,
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("18:00 - 18:25", style: TextStyle(fontSize: 18)),
-                  RoundButtonOutLined(
-                      child: Row(
-                        children: const [
-                          Icon(
-                            Icons.cancel_presentation,
-                            color: Colors.red,
+              ...scheduleItems.map((scheduleItem) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                          "${scheduleItem.scheduleDetailInfo!.startPeriod!} - ${scheduleItem.scheduleDetailInfo!.endPeriod!}",
+                          style: TextStyle(fontSize: 18)),
+                      RoundButtonOutLined(
+                          child: Row(
+                            children: const [
+                              Icon(
+                                Icons.cancel_presentation,
+                                color: Colors.red,
+                              ),
+                              Text(
+                                'Hủy',
+                                style: TextStyle(color: Colors.red),
+                              )
+                            ],
                           ),
-                          Text(
-                            'Hủy',
-                            style: TextStyle(color: Colors.red),
-                          )
-                        ],
-                      ),
-                      round: 0,
-                      color: Colors.red)
-                ],
-              ),
+                          round: 0,
+                          color: Colors.red)
+                    ],
+                  )),
             ]),
           ),
           Container(

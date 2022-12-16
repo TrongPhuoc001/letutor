@@ -75,8 +75,12 @@ class Schedule {
         : null;
     classReview = json['classReview'];
     showRecordUrl = json['showRecordUrl'];
-    studentMaterials = json['studentMaterials'].cast<String>();
-    feedbacks = json['feedbacks'].cast<String>();
+    if (json['studentMaterials'] != null) {
+      studentMaterials = json['studentMaterials'].cast<String>();
+    }
+    if (json['feedbacks'] != null) {
+      feedbacks = json['feedbacks'].cast<String>();
+    }
   }
 
   Map<String, dynamic> toJson() {

@@ -32,20 +32,28 @@ class Pagination extends StatelessWidget {
     }
 
     List<Widget> pageButton = pages
-        .map((e) => IconButton(
-            onPressed: () {
-              onPageChanged(e);
-            },
-            icon: Text(
-              e.toString(),
-              style: TextStyle(
-                  color: e == currentPage ? Colors.blue : Colors.grey),
-            )))
+        .map((e) => InkWell(
+              onTap: () {
+                onPageChanged(e);
+              },
+              child: Ink(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 1.0),
+                    shape: BoxShape.rectangle,
+                  ),
+                  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  child: Text(
+                    e.toString(),
+                    style: TextStyle(
+                        color: e == currentPage ? Colors.blue : Colors.grey,
+                        fontSize: 16),
+                  )),
+            ))
         .toList();
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
               onPressed: () {

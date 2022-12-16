@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/widgets/teacher/book_chedule_item.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 
 import '../../../model/schedule_model.dart';
@@ -13,8 +14,9 @@ Widget ScheduleHistoryItem(Schedule scheduleItem) {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "T6, 21 Thg 10 22",
+          Text(
+            readTimestamp(
+                scheduleItem.scheduleDetailInfo!.startPeriodTimestamp!),
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const Text("1 buổi học"),
@@ -36,8 +38,8 @@ Widget ScheduleHistoryItem(Schedule scheduleItem) {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Thời gian bài học: 18:00 - 18:25",
+                  Text(
+                    "Thời gian bài học: ${scheduleItem.scheduleDetailInfo!.startPeriod} - ${scheduleItem.scheduleDetailInfo!.endPeriod}",
                     style: TextStyle(fontSize: 18),
                   ),
                   Row(

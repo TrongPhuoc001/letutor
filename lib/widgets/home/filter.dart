@@ -4,6 +4,7 @@ import 'package:lettutor/widgets/common/button/round_button.dart';
 import 'package:lettutor/widgets/common/button/round_button_outlined.dart';
 import 'package:lettutor/widgets/multi_select_dialog.dart';
 import 'package:lettutor/widgets/round_text_field.dart';
+import 'package:multiselect/multiselect.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/specialty.dart';
@@ -17,6 +18,7 @@ class Fliter extends StatefulWidget {
 
 class _FliterState extends State<Fliter> {
   final FocusNode focusNode = FocusNode();
+  List<String> selectedItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +45,28 @@ class _FliterState extends State<Fliter> {
                         hintText: "Nhập tên gia sư...",
                         controller: FilterProvider.searchController)),
                 Expanded(
-                    child: MultiSelectDialog(
-                        items: ['Bản ngữ', 'Việt nam', 'Nước ngoài'],
-                        onChanged: (v) {
-                          context.read<FilterProvider>().updateNation(v[0]);
-                        },
-                        selectedItems: [],
-                        title: "Chọn quốc tịch")),
+                    child: DropDownMultiSelect(
+                  onChanged: (List<String> x) {
+                    setState(() {
+                      selectedItems = x;
+                    });
+                  },
+                  whenEmpty: "Chọn quốc gia",
+                  options: ['Bản ngữ', "Việt Nam", 'Nước ngoài'],
+                  selectedValues: selectedItems,
+                  hintStyle: TextStyle(color: Colors.grey),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20), gapPadding: 0),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20), gapPadding: 0),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20), gapPadding: 0),
+                    isDense: true,
+                    isCollapsed: true,
+                  ),
+                )),
               ],
             )),
         const Padding(

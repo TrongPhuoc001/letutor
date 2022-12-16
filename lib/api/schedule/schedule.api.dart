@@ -243,6 +243,32 @@ class Data {
   }
 }
 
+class NextScheduleResponse {
+  String? message;
+  List<Schedule>? data;
+
+  NextScheduleResponse({this.message, this.data});
+
+  NextScheduleResponse.fromJson(Map<String, dynamic> json) {
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <Schedule>[];
+      json['data'].forEach((v) {
+        data!.add(new Schedule.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> dataa = new Map<String, dynamic>();
+    dataa['message'] = this.message;
+    if (this.data != null) {
+      dataa['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return dataa;
+  }
+}
+
 class ScheduleApi {
   static String URL = 'schedule/';
 
@@ -285,6 +311,49 @@ class ScheduleApi {
         return throw Exception('Failed to load Schedule');
       }
     } catch (err) {
+      return throw Exception('Failed to load Schedule');
+    }
+  }
+
+  static Future<NextScheduleResponse> getNextSchedule() async {
+    DateTime now = DateTime.now();
+    String url = 'booking/next?dateTime=${now.millisecondsSinceEpoch}';
+    try {
+      var res = await BaseApi.get(url);
+      if (res.statusCode == 200) {
+        try {
+          NextScheduleResponse response =
+              NextScheduleResponse.fromJson(json.decode(res.body));
+          return response;
+        } catch (err) {
+          print(err);
+          return throw Exception('Failed to load Schedule');
+        }
+      } else {
+        return throw Exception('Failed to load Schedule');
+      }
+    } catch (err) {
+      print(err);
+      return throw Exception('Failed to load Schedule');
+    }
+  }
+
+  static Future<int> getTotalHours() async {
+    String url = 'call/total';
+    try {
+      var res = await BaseApi.get(url);
+      if (res.statusCode == 200) {
+        try {
+          return json.decode(res.body)['total'];
+        } catch (err) {
+          print(err);
+          return throw Exception('Failed to load Schedule');
+        }
+      } else {
+        return throw Exception('Failed to load Schedule');
+      }
+    } catch (err) {
+      print(err);
       return throw Exception('Failed to load Schedule');
     }
   }

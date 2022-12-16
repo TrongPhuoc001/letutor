@@ -69,6 +69,14 @@ bool isBeforeNow(int timestamp) {
   return date.isBefore(DateTime.now());
 }
 
+bool isOntheSameDate(int timestamp1, int timestamp2) {
+  var date1 = DateTime.fromMillisecondsSinceEpoch(timestamp1);
+  var date2 = DateTime.fromMillisecondsSinceEpoch(timestamp2);
+  return date1.day == date2.day &&
+      date1.month == date2.month &&
+      date1.year == date2.year;
+}
+
 final weekDay = {
   1: 'T2',
   2: 'T3',

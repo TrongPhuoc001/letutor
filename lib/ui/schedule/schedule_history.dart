@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lettutor/themes/main_theme.dart';
 import 'package:lettutor/ui/schedule/widgets/header.dart';
 import 'package:lettutor/ui/schedule/widgets/schedule_history_item.dart';
+import 'package:lettutor/widgets/home/pagination.dart';
 
 import '../../api/schedule/schedule.api.dart';
 import '../../model/schedule_model.dart';
@@ -55,7 +56,15 @@ class _ScheduleHistoryState extends State<ScheduleHistory> {
                           .map((schedule) => ScheduleHistoryItem(schedule)),
                       SizedBox(
                         height: 50,
-                      )
+                      ),
+                      Pagination(
+                          totalPage: (data.data!.count! / 10).ceil(),
+                          currentPage: page,
+                          onPageChanged: (value) {
+                            setState(() {
+                              page = value;
+                            });
+                          })
                     ],
                   ),
                 ));

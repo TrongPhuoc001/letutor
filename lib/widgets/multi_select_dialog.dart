@@ -37,6 +37,15 @@ class _MultiSelectDialogState extends State<MultiSelectDialog> {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Colors.grey),
         ),
+        buttonText: Text(
+          widget.title,
+          style: TextStyle(color: Colors.grey),
+        ),
+        buttonIcon: Icon(
+          Icons.arrow_drop_down,
+          size: 8,
+          color: Colors.grey,
+        ),
         items: widget.items.map((e) => MultiSelectItem(e, e)).toList(),
         onConfirm: (values) {
           widget.onChanged?.call(values);
