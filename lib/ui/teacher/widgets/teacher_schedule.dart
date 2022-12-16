@@ -31,7 +31,6 @@ class _TeacherScheduleState extends State<TeacherSchedule> {
             startTimestamp: startTimestamp,
             endTimestamp: endTimestamp),
         builder: (context, snapshot) {
-          print(snapshot.data);
           if (snapshot.hasData && snapshot.data != null) {
             ScheduleResponse res = snapshot.data as ScheduleResponse;
             List<ScheduleOfTutor> schedules = res.scheduleOfTutor!;

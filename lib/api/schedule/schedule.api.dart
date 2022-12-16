@@ -278,7 +278,6 @@ class ScheduleApi {
       required BigInt endTimestamp}) async {
     String url =
         '$URL?tutorId=$tutorId&startTimestamp=$startTimestamp&endTimestamp=$endTimestamp';
-    print(url);
     try {
       var res = await BaseApi.get(url);
       if (res.statusCode == 200) {
@@ -349,6 +348,25 @@ class ScheduleApi {
           print(err);
           return throw Exception('Failed to load Schedule');
         }
+      } else {
+        return throw Exception('Failed to load Schedule');
+      }
+    } catch (err) {
+      print(err);
+      return throw Exception('Failed to load Schedule');
+    }
+  }
+
+  static Future<dynamic> bookingSchedule(
+      String scheduleDetailId, String note) async {
+    String url = 'booking';
+    try {
+      var res = await BaseApi.post(url, {
+        'scheduleDetailIds': [scheduleDetailId],
+        'note': note
+      });
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
       } else {
         return throw Exception('Failed to load Schedule');
       }

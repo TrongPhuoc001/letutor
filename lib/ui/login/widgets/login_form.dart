@@ -5,8 +5,10 @@ import 'package:lettutor/api/auth/auth.api.dart';
 import 'package:lettutor/model/token_model.dart';
 import 'package:lettutor/model/user.dart';
 import 'package:lettutor/ui/forget_password/forget_password.dart';
+import 'package:lettutor/ui/login/login.dart';
 import 'package:lettutor/ui/my_app.dart';
 import 'package:lettutor/ui/teacher/find_teacher.dart';
+import 'package:lettutor/widgets/notification.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -118,19 +120,14 @@ class _LoginFormState extends State<LoginForm> {
                     try {
                       LoginResponse loginResponse = await AuthApi.register(
                           emailController.text, passwordController.text);
-                      context
-                          .read<UserProvider>()
-                          .login(loginResponse.user!, loginResponse.tokens!);
-                      prefs.setString(
-                          "tokens", jsonEncode(loginResponse.tokens!.toJson()));
-                      prefs.setString(
-                          "user", jsonEncode(loginResponse.user!.toJson()));
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const FindTeacher()));
+                      notification(
+                          context: context,
+                          message:
+                              "Đăng ký thành công. Kiểm tra email để kích hoạt tài khoản.",
+                          color: Colors.green);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Login()));
                     } catch (err) {
-                      print(err.toString());
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text("Đăng ký thất bại. " + err.toString()),
                         behavior: SnackBarBehavior.floating,

@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/api/tutor/tutor.api.dart';
+import 'package:lettutor/api/user/user.api.dart';
 import 'package:lettutor/constants/languages.dart';
 import 'package:lettutor/constants/specialty.dart';
 import 'package:lettutor/model/review_model.dart';
 import 'package:lettutor/model/tutor.dart';
 import 'package:lettutor/model/tutor_short_info.dart';
 import 'package:lettutor/themes/main_theme.dart';
+import 'package:lettutor/ui/courses/course_detail.dart';
 import 'package:lettutor/ui/teacher/widgets/review.dart';
 import 'package:lettutor/ui/teacher/widgets/teacher_info.dart';
 import 'package:lettutor/ui/teacher/widgets/teacher_schedule.dart';
 import 'package:lettutor/ui/teacher/widgets/teacher_video.dart';
+import 'package:lettutor/widgets/notification.dart';
 
 import '../../model/user.dart';
 import '../../widgets/icon_text.dart';
@@ -56,7 +59,22 @@ class _TeacherDetailState extends State<TeacherDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 InkWell(
-                                    onTap: () {},
+                                    onTap: () async {
+                                      try {
+                                        await UserApi.manageFavoriteTutor(
+                                            tutorDetail.user!.id!);
+                                        setState(() {
+                                          tutorDetail.isFavorite =
+                                              !tutorDetail.isFavorite!;
+                                        });
+                                      } catch (err) {
+                                        notification(
+                                            context: context,
+                                            message:
+                                                "Failed to add favorite tutor",
+                                            color: Colors.orange);
+                                      }
+                                    },
                                     child: Column(
                                       children: [
                                         tutorDetail.isFavorite!

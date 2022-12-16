@@ -48,4 +48,20 @@ class UserApi {
       throw Exception('Failed to update user');
     }
   }
+
+  static Future<dynamic> manageFavoriteTutor(String tutorId) async {
+    String url = 'user/manageFavoriteTutor';
+
+    try {
+      var res = await BaseApi.post(url, {'tutorId': tutorId});
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      } else {
+        throw Exception('Failed to manage favorite tutor');
+      }
+    } catch (err) {
+      print(err);
+      throw Exception('Failed to manage favorite tutor');
+    }
+  }
 }

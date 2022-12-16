@@ -25,11 +25,17 @@ class _HomeBannerState extends State<HomeBanner> {
           .compareTo(b.scheduleDetailInfo!.startPeriodTimestamp!),
     );
 
+    List<Schedule> schedules = widget.schedules
+        .where((element) =>
+            element.scheduleDetailInfo!.startPeriodTimestamp! >
+            DateTime.now().millisecondsSinceEpoch)
+        .toList();
+
     DateTime upComming = DateTime.fromMillisecondsSinceEpoch(
-        widget.schedules[0].scheduleDetailInfo!.startPeriodTimestamp!);
+        schedules[0].scheduleDetailInfo!.startPeriodTimestamp!);
 
     DateTime end = DateTime.fromMillisecondsSinceEpoch(
-        widget.schedules[0].scheduleDetailInfo!.endPeriodTimestamp!);
+        schedules[0].scheduleDetailInfo!.endPeriodTimestamp!);
     DateTime now = DateTime.now();
 
     Timer timer = new Timer(new Duration(seconds: 1), () {

@@ -6,6 +6,11 @@ import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 import '../../../widgets/common/button/round_button_outlined.dart';
 
 Widget ScheduleItem(List<Schedule> scheduleItems) {
+  DateTime startDateTime = DateTime.fromMillisecondsSinceEpoch(
+      scheduleItems[0].scheduleDetailInfo!.startPeriodTimestamp!);
+  DateTime endDateTime = DateTime.fromMillisecondsSinceEpoch(
+      scheduleItems[0].scheduleDetailInfo!.endPeriodTimestamp!);
+
   return Container(
     padding: const EdgeInsets.all(10),
     color: const Color.fromRGBO(241, 241, 241, 1),
