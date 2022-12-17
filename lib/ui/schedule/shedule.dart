@@ -66,7 +66,8 @@ class _ScheduleState extends State<ScheduleScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    ...scheduleMap.entries.map((e) => ScheduleItem(e.value)),
+                    ...scheduleMap.entries
+                        .map((e) => ScheduleItem(scheduleItems: e.value)),
                     Pagination(
                         totalPage: (data.data!.count! / 10).ceil(),
                         currentPage: page,

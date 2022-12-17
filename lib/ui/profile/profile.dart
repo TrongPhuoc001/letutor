@@ -47,13 +47,13 @@ class _ProfileState extends State<Profile> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    controllers["name"]!.text = widget.user.name!;
-    controllers["email"]!.text = widget.user.email!;
-    controllers["country"]!.text = widget.user.country!;
-    controllers["phone"]!.text = widget.user.phone!;
-    controllers["birthday"]!.text = widget.user.birthday!;
-    controllers["level"]!.text = widget.user.level!;
-    controllers["schedule"]!.text = widget.user.avatar!;
+    controllers["name"]!.text = widget.user.name ?? '';
+    controllers["email"]!.text = widget.user.email ?? '';
+    controllers["country"]!.text = widget.user.country ?? '';
+    controllers["phone"]!.text = widget.user.phone ?? '';
+    controllers["birthday"]!.text = widget.user.birthday ?? '';
+    controllers["level"]!.text = widget.user.level ?? '';
+    controllers["schedule"]!.text = widget.user.avatar ?? '';
   }
 
   @override
@@ -79,15 +79,20 @@ class _ProfileState extends State<Profile> {
                       Container(
                         padding: const EdgeInsets.all(20),
                         child: Column(children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            margin: const EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: NetworkImage(widget.user.avatar!),
+                          InkWell(
+                            onTap: () {
+                              
+                            },
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              margin: const EdgeInsets.only(right: 10),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(widget.user.avatar!),
+                                ),
                               ),
                             ),
                           ),

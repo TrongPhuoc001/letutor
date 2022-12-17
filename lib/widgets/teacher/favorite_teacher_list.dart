@@ -20,7 +20,9 @@ Widget FavoriteTeacherList(List<FavoriteTutor?> teacherList, context) {
       .map((e) => e!)
       .toList();
   List<Widget> teacherCardList = teacherShortInfoListNotNull
-      .map((teacher) => TeacherCard(teacher, context, isFavorite: true))
+      .map((teacher) => TeacherCard(
+          teacher: teacher,
+          isFavorite: teacher.isfavoritetutor == '1' ? true : false))
       .toList();
   return Padding(
     padding: EdgeInsets.all(20),

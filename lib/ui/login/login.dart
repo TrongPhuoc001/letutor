@@ -37,7 +37,7 @@ class Login extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Register()));
+                                  builder: (context) => const Register()));
                         },
                         child: const Text('Đăng ký'),
                       ),

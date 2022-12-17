@@ -11,6 +11,7 @@ import 'package:lettutor/ui/teacher/find_teacher.dart';
 import 'package:lettutor/widgets/notification.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:validators/validators.dart';
 
 class LoginForm extends StatefulWidget {
   var type;
@@ -40,8 +41,9 @@ class _LoginFormState extends State<LoginForm> {
             textAlign: TextAlign.left,
           ),
           Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
-              child: TextField(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 30),
+              child: TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: const InputDecoration(
                   contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   border: OutlineInputBorder(
@@ -49,6 +51,16 @@ class _LoginFormState extends State<LoginForm> {
                       gapPadding: 0),
                   hintText: 'mail@example.com',
                 ),
+                validator: (value) {
+                  if (value == null) {
+                    return null;
+                  }
+
+                  if (!isEmail(value)) {
+                    return 'Email bạn nhập không phù hợp';
+                  }
+                  return null;
+                },
                 controller: emailController,
               )),
           const Text(
@@ -60,8 +72,9 @@ class _LoginFormState extends State<LoginForm> {
             textAlign: TextAlign.left,
           ),
           Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: TextField(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: const InputDecoration(
                   contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   border: OutlineInputBorder(
@@ -71,6 +84,16 @@ class _LoginFormState extends State<LoginForm> {
                 enableSuggestions: false,
                 autocorrect: false,
                 controller: passwordController,
+                validator: (value) {
+                  if (value == null) {
+                    return null;
+                  }
+
+                  if (value.length < 6) {
+                    return 'Mật khẩu quá ngắn';
+                  }
+                  return null;
+                },
               )),
           widget.type == "login"
               ? TextButton(

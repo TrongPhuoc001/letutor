@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
           User? user;
           TokenModel? tokens;
           if (userData != null && tokensData != null) {
-            user = User.fromJson(jsonDecode(userData!));
-            tokens = TokenModel.fromJson(jsonDecode(tokensData!));
+            user = User.fromJson(jsonDecode(userData));
+            tokens = TokenModel.fromJson(jsonDecode(tokensData));
             if (tokens.access != null && tokens.access!.expires != null) {
               String accessExpries = tokens.access!.expires!;
               if (DateTime.parse(accessExpries).isBefore(DateTime.now())) {
@@ -49,10 +49,11 @@ class MyApp extends StatelessWidget {
                 Provider<SharedPreferences>.value(value: snapshot.data!)
               ],
               child: MaterialApp(
+                debugShowCheckedModeBanner: false,
                 theme: ThemeData(
                     textTheme: GoogleFonts.poppinsTextTheme(
                         Theme.of(context).textTheme)),
-                home: user != null ? FindTeacher() : Login(),
+                home: user != null ? const FindTeacher() : const Login(),
               ));
         }
         return const Center(child: CircularProgressIndicator());

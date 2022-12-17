@@ -2,14 +2,25 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lettutor/model/course_model.dart';
 import 'package:lettutor/themes/main_theme.dart';
+import 'package:lettutor/ui/courses/pdf_view.dart';
 
 class CourseDetail extends StatelessWidget {
   const CourseDetail({required this.course});
   final CourseModel course;
+  @override
   Widget build(BuildContext context) {
     List<Widget>? topics = course.topics
         ?.map((topic) => InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PdfView(
+                            namePdf: topic.nameFile!,
+                            name:
+                                "${course.topics?.indexOf(topic)}. ${topic.name!}",
+                          )));
+            },
             child: Row(
               children: [
                 Expanded(

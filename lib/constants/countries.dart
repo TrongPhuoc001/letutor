@@ -249,3 +249,10 @@ Map<String, String> COUNTRIES = {
   'ZW': 'Zimbabwe',
   'AX': 'Åland Islands',
 };
+
+Map<int, String> CANCEL_COURSE = {
+  1: 'Reschedule at another time',
+  2: 'Busy at that time',
+  3: 'Asked by the tutor',
+  4: 'Other'
+};

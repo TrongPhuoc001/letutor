@@ -43,6 +43,7 @@ class TutorShortInfo {
   String? isNative;
   int? price;
   bool? isOnline;
+  String? isfavoritetutor;
 
   TutorShortInfo(
       {this.level,
@@ -88,7 +89,8 @@ class TutorShortInfo {
       this.rating,
       this.isNative,
       this.price,
-      this.isOnline});
+      this.isOnline,
+      this.isfavoritetutor});
 
   TutorShortInfo.fromJson(Map<String, dynamic> json) {
     level = json['level'];
@@ -137,6 +139,7 @@ class TutorShortInfo {
     isNative = json['isNative'];
     price = json['price'];
     isOnline = json['isOnline'];
+    isfavoritetutor = json['isfavoritetutor'];
   }
 
   Map<String, dynamic> toJson() {
@@ -185,6 +188,7 @@ class TutorShortInfo {
     data['isNative'] = this.isNative;
     data['price'] = this.price;
     data['isOnline'] = this.isOnline;
+    data['isfavoritetutor'] = this.isfavoritetutor;
     return data;
   }
 }
