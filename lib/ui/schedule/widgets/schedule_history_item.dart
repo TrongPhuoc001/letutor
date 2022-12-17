@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lettutor/widgets/round_button_outlined.dart';
+import 'package:lettutor/widgets/teacher/book_chedule_item.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 
-Widget ScheduleHistoryItem(scheduleItem) {
+import '../../../model/schedule_model.dart';
+import '../../../widgets/common/button/round_button_outlined.dart';
+
+Widget ScheduleHistoryItem(Schedule scheduleItem) {
   return Container(
     padding: const EdgeInsets.all(10),
     margin: EdgeInsets.only(top: 20),
@@ -11,15 +14,18 @@ Widget ScheduleHistoryItem(scheduleItem) {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "T6, 21 Thg 10 22",
+          Text(
+            readTimestamp(
+                scheduleItem.scheduleDetailInfo!.startPeriodTimestamp!),
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const Text("1 buổi học"),
           Container(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             color: Colors.white,
-            child: TeacherShortInfo(scheduleItem.teacher, contact: true),
+            child: TeacherShortInfo(
+                scheduleItem.scheduleDetailInfo!.scheduleInfo!.tutorInfo!,
+                contact: true),
           ),
           const SizedBox(
             height: 20,
@@ -32,8 +38,8 @@ Widget ScheduleHistoryItem(scheduleItem) {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Thời gian bài học: 18:00 - 18:25",
+                  Text(
+                    "Thời gian bài học: ${scheduleItem.scheduleDetailInfo!.startPeriod} - ${scheduleItem.scheduleDetailInfo!.endPeriod}",
                     style: TextStyle(fontSize: 18),
                   ),
                   Row(

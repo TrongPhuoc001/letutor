@@ -10,6 +10,7 @@ import 'package:lettutor/ui/schedule/schedule_history.dart';
 import 'package:lettutor/ui/schedule/shedule.dart';
 import 'package:lettutor/ui/teacher/find_teacher.dart';
 import 'package:lettutor/widgets/border_icon.dart';
+import 'package:provider/provider.dart';
 
 import '../../model/user.dart';
 
@@ -20,26 +21,31 @@ class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<MenuItem> menuItems = [
-      const MenuItem(
-          title: 'Mua buổi học', icon: Icons.book, navigate: BuyCourses()),
-      const MenuItem(
+      MenuItem(title: 'Mua buổi học', icon: Icons.book, navigate: BuyCourses()),
+      MenuItem(
           title: 'Đổi mật khuẩu', icon: Icons.key, navigate: FindTeacher()),
-      const MenuItem(
+      MenuItem(
           title: 'Gia sư', icon: Icons.assessment, navigate: FindTeacher()),
-      const MenuItem(
-          title: 'Lịch học', icon: Icons.today, navigate: Schedule()),
-      const MenuItem(
+      MenuItem(
+          title: 'Lịch học', icon: Icons.today, navigate: ScheduleScreen()),
+      MenuItem(
           title: 'Lịch sử', icon: Icons.history, navigate: ScheduleHistory()),
-      const MenuItem(title: 'Khóa học', icon: Icons.school, navigate: Course()),
-      const MenuItem(
+      MenuItem(title: 'Khóa học', icon: Icons.school, navigate: Course()),
+      MenuItem(
           title: 'Khóa học của tôi',
           icon: Icons.auto_stories,
           navigate: FindTeacher()),
-      const MenuItem(
+      MenuItem(
           title: 'Đăng ký làm gia sư',
           icon: Icons.assessment,
           navigate: FindTeacher()),
-      const MenuItem(title: 'Đăng xuất', icon: Icons.logout, navigate: Login()),
+      MenuItem(
+          title: 'Đăng xuất',
+          icon: Icons.logout,
+          navigate: Login(),
+          aditionalAction: () {
+            context.read<UserProvider>().logout();
+          }),
     ];
 
     List<Widget> menuItemsWidget = [
@@ -48,11 +54,17 @@ class Menu extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
-                  borderIcon(Image.network(user.avatar), padding: 0, size: 20),
+                  borderIcon(
+                      Image.network(
+                        user.avatar!,
+                        fit: BoxFit.fill,
+                      ),
+                      padding: 0,
+                      size: 20),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: Text(
-                      user.name,
+                      user.name!,
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
@@ -87,6 +99,9 @@ class Menu extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
+                    if (item.aditionalAction != null) {
+                      item.aditionalAction!();
+                    }
                     Navigator.push(context,
                         MaterialPageRoute(builder: (builder) => item.navigate));
                   },
@@ -110,9 +125,13 @@ class Menu extends StatelessWidget {
 }
 
 class MenuItem {
-  const MenuItem(
-      {required this.title, required this.icon, required this.navigate});
+  MenuItem(
+      {required this.title,
+      required this.icon,
+      required this.navigate,
+      this.aditionalAction});
   final String title;
   final IconData icon;
   final Widget navigate;
+  Function? aditionalAction;
 }

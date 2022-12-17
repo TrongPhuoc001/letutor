@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lettutor/constants/levels.dart';
 import 'package:lettutor/model/course_model.dart';
 import 'package:lettutor/ui/courses/course_detail.dart';
 
@@ -19,22 +21,27 @@ Widget CourseCard(CourseModel course, BuildContext context) {
         child: Column(children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(15.0),
-            child: Image.asset(course.imageUrl),
+            child: CachedNetworkImage(
+                imageUrl: course.imageUrl!,
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error)),
           ),
           Padding(
               padding: EdgeInsets.all(20),
               child: Column(children: [
-                Text(course.name,
+                Text(course.name!,
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
-                  child: Text(course.description),
+                  child: Text(course.description!),
                 ),
                 Row(children: [
-                  Text(course.level),
-                  Text(" • "),
-                  Text(course.topics.length.toString() + " lessons")
+                  Text(LEVELS[int.tryParse(course.level!) ?? 1]),
+                  course.topics != null
+                      ? Text(
+                          "•" + course.topics!.length.toString() + " lessons")
+                      : SizedBox()
                 ])
               ]))
         ]),

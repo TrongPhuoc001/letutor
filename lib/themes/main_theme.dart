@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/constants/assets.dart';
 import 'package:lettutor/ui/menu/menu.dart';
+import 'package:lettutor/ui/my_app.dart';
 import 'package:lettutor/ui/teacher/find_teacher.dart';
 import 'package:lettutor/widgets/border_icon.dart';
-
-import '../model/user.dart';
+import 'package:provider/provider.dart';
 
 Widget MainTheme({hideMenu = false, child, context, onMenu = false}) {
   Widget headerRight = Row(
@@ -24,13 +24,8 @@ Widget MainTheme({hideMenu = false, child, context, onMenu = false}) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const Menu(
-                                user: User(
-                                    id: "f569c202-7bbf-4620-af77-ecc1419a6b28",
-                                    avatar:
-                                        "https://sandbox.api.lettutor.com/avatar/f569c202-7bbf-4620-af77-ecc1419a6b28avatar1657037111897.jpg",
-                                    name: "Long Long",
-                                    email: 'student@lettutor.com'))));
+                            builder: (context) => Menu(
+                                user: context.watch<UserProvider>().user!)));
                   }
                 },
               )),

@@ -25,7 +25,7 @@ class Register extends StatelessWidget {
                 children: [
                   Image.asset(Assets.loginBanner),
                   LoginInstruction(type: "register"),
-                  LoginForm(context, type: "register"),
+                  LoginForm(type: "register"),
                   SocialProvider(),
                   Center(
                       child: Row(

@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class TeacherVideo extends StatefulWidget {
+  final String? videoUrl;
   const TeacherVideo({
+    this.videoUrl,
     Key? key,
   }) : super(key: key);
 
@@ -16,12 +18,15 @@ class TeacherVideo extends StatefulWidget {
 class _TeacherVideoState extends State<TeacherVideo> {
   bool isLoadingVideo = true;
   bool isPlayingVideo = false;
-  final videoController = VideoPlayerController.network(
+  VideoPlayerController videoController = VideoPlayerController.network(
       'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4');
 
   @override
   void initState() {
     super.initState();
+    if (widget.videoUrl != null) {
+      videoController = VideoPlayerController.network(widget.videoUrl!);
+    }
     videoController.addListener(() {
       if (videoController.value.isInitialized) {
         setState(() {

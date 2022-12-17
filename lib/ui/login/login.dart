@@ -6,8 +6,6 @@ import 'package:lettutor/ui/login/widgets/login_form.dart';
 import 'package:lettutor/ui/login/widgets/login_instruction.dart';
 import 'package:lettutor/ui/login/widgets/social_provider.dart';
 
-import '../my_app.dart';
-
 class Login extends StatelessWidget {
   const Login({super.key});
 
@@ -25,7 +23,9 @@ class Login extends StatelessWidget {
                 children: [
                   Image.asset(Assets.loginBanner),
                   LoginInstruction(),
-                  LoginForm(context),
+                  LoginForm(
+                    type: 'login',
+                  ),
                   SocialProvider(),
                   Center(
                       child: Row(

@@ -1,38 +1,48 @@
+import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lettutor/constants/languages.dart';
+import 'package:lettutor/model/tutor_short_info.dart';
 
-import '../../model/teacher.dart';
-
-Widget TeacherShortInfo(Teacher teacher, {contact = false, size = 60}) {
+Widget TeacherShortInfo(TutorShortInfo teacher, {contact = false, size = 60}) {
   return Row(
     children: [
-      Container(
-        width: size * 1.0,
-        height: size * 1.0,
-        margin: EdgeInsets.only(right: 10),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: NetworkImage(teacher.avatarUrl),
+      Padding(
+        padding: EdgeInsets.only(right: 10),
+        child: ClipOval(
+          child: Image.network(
+            teacher.avatar != null
+                ? teacher.avatar!
+                : 'https://www.lewesac.co.uk/wp-content/uploads/2017/12/default-avatar.jpg',
+            width: 50,
+            height: 50,
+            fit: BoxFit.scaleDown,
+            errorBuilder: (context, error, stackTrace) {
+              return Image.network(
+                  'https://www.lewesac.co.uk/wp-content/uploads/2017/12/default-avatar.jpg',
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.fill);
+            },
           ),
         ),
       ),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(teacher.name,
+          Text(teacher.name!,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           Row(
             children: [
-              SizedBox(
-                width: 20,
-                height: 12,
-                child: SvgPicture.network(teacher.nation.flagUrl),
-              ),
-              Text(teacher.nation.name,
+              teacher.country != null
+                  ? Flag.fromString(teacher.country!.toLowerCase(),
+                      height: 20, width: 30)
+                  : SizedBox(width: 30, height: 20),
+              Text(
+                  teacher.country != null
+                      ? (LANGUAGES[teacher.country!.toLowerCase()] ?? '')
+                      : 'Vietnam',
                   style: TextStyle(fontSize: 14, color: Colors.grey))
             ],
           ),
@@ -53,14 +63,16 @@ Widget TeacherShortInfo(Teacher teacher, {contact = false, size = 60}) {
                           style: TextStyle(color: Colors.blue, fontSize: 14))
                     ],
                   ))
-              : RatingBar.builder(
-                  initialRating: teacher.rating,
-                  itemBuilder: (context, _) =>
-                      Icon(Icons.star, color: Colors.amber, size: 15),
-                  onRatingUpdate: (r) {},
-                  ignoreGestures: true,
-                  itemSize: 20,
-                ),
+              : teacher.rating != null
+                  ? RatingBar.builder(
+                      initialRating: teacher.rating!,
+                      itemBuilder: (context, _) =>
+                          Icon(Icons.star, color: Colors.amber, size: 15),
+                      onRatingUpdate: (r) {},
+                      ignoreGestures: true,
+                      itemSize: 20,
+                    )
+                  : Text('No rating'),
         ],
       )
     ],
