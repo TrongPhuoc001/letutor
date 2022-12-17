@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:lettutor/model/schedule_model.dart';
+import 'package:lettutor/ui/video_call/jitsi_call.dart';
 import 'package:lettutor/widgets/teacher/book_chedule_item.dart';
 
 class HomeBanner extends StatefulWidget {
@@ -45,7 +46,7 @@ class _HomeBannerState extends State<HomeBanner> {
     });
     return Container(
       padding: const EdgeInsets.all(10),
-      height: 200,
+      height: 250,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -112,6 +113,20 @@ class _HomeBannerState extends State<HomeBanner> {
           Text(
             "Tổng số giờ bạn đã học là ${(widget.totalLearned / 60).floor()} giờ ${widget.totalLearned - (widget.totalLearned / 60).floor() * 60} phút",
             style: const TextStyle(color: Colors.white),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          SizedBox(
+            height: 50,
+            width: 150,
+            child: TextButton(
+                style: TextButton.styleFrom(backgroundColor: Colors.white),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MeetingScreen()));
+                },
+                child: Text('Tham gia buổi học')),
           )
         ],
       ),
