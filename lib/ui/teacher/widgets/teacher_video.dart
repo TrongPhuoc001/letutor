@@ -18,34 +18,42 @@ class TeacherVideo extends StatefulWidget {
 class _TeacherVideoState extends State<TeacherVideo> {
   bool isLoadingVideo = true;
   bool isPlayingVideo = false;
-  VideoPlayerController videoController = VideoPlayerController.network(
-      'https://api.app.lettutor.com/video/4d54d3d7-d2a9-42e5-97a2-5ed38af5789avideo1627913015871.mp4');
+  late VideoPlayerController videoController;
 
   @override
   void initState() {
     super.initState();
-    if (widget.videoUrl != null) {
-      videoController = VideoPlayerController.network(widget.videoUrl!);
-    }
-    videoController.addListener(() {
-      if (videoController.value.isInitialized) {
-        setState(() {
-          isLoadingVideo = false;
-        });
-      }
+    videoController = VideoPlayerController.network(widget.videoUrl ?? '');
+
+    videoController.initialize().then((value) {
+      setState(() {
+        isLoadingVideo = false;
+      });
     });
-    videoController.initialize();
   }
 
-  onTapVideo() {
-    if (!isPlayingVideo) {
-      videoController.play();
-    } else {
-      videoController.pause();
+  onTapVideo() async {
+    try {
+      if (!videoController.value.isPlaying) {
+        await videoController.play();
+        print(1);
+      } else {
+        videoController.pause();
+        print(2);
+      }
+    } catch (e) {
+      print(e);
     }
     setState(() {
       isPlayingVideo = !isPlayingVideo;
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    videoController.pause();
+    videoController.dispose();
   }
 
   @override
@@ -95,10 +103,7 @@ class _TeacherVideoState extends State<TeacherVideo> {
                         Flexible(
                           child: SizedBox(
                             height: 20,
-                            child: VideoProgressIndicator(
-                                colors: const VideoProgressColors(
-                                    playedColor: Colors.blue),
-                                videoController,
+                            child: VideoProgressIndicator(videoController,
                                 allowScrubbing: true),
                           ),
                         ),

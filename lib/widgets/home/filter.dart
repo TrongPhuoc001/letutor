@@ -35,40 +35,40 @@ class _FliterState extends State<Fliter> {
           child: Text("Tìm kiếm gia sư",
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
         ),
-        SizedBox(
-            width: double.infinity,
-            child: Row(
-              children: [
-                Expanded(
-                    child: RoundTextField(
-                        focusNode: focusNode,
-                        hintText: "Nhập tên gia sư...",
-                        controller: FilterProvider.searchController)),
-                Expanded(
-                    child: DropDownMultiSelect(
-                  onChanged: (List<String> x) {
-                    setState(() {
-                      selectedItems = x;
-                    });
-                  },
-                  whenEmpty: "Chọn quốc gia",
-                  options: ['Bản ngữ', "Việt Nam", 'Nước ngoài'],
-                  selectedValues: selectedItems,
-                  hintStyle: TextStyle(color: Colors.grey),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20), gapPadding: 0),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20), gapPadding: 0),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20), gapPadding: 0),
-                    isDense: true,
-                    isCollapsed: true,
-                  ),
-                )),
-              ],
-            )),
+        Padding(
+          padding: const EdgeInsets.only(right: 50.0),
+          child: RoundTextField(
+              focusNode: focusNode,
+              hintText: "Nhập tên gia sư...",
+              controller: FilterProvider.searchController),
+        ),
+        SizedBox(height: 10),
+        DropDownMultiSelect(
+          onChanged: (List<String> x) {
+            setState(() {
+              selectedItems = x;
+            });
+          },
+          whenEmpty: "Chọn quốc gia",
+          options: ['Bản ngữ', "Việt Nam", 'Nước ngoài'],
+          selectedValues: selectedItems,
+          hintStyle: TextStyle(color: Colors.grey),
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20), gapPadding: 0),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color.fromRGBO(233, 233, 233, 1)),
+                borderRadius: BorderRadius.circular(20),
+                gapPadding: 0),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.circular(20),
+                gapPadding: 0),
+            isDense: true,
+            isCollapsed: true,
+          ),
+        ),
         const Padding(
           padding: EdgeInsets.fromLTRB(0, 20, 0, 5),
           child: Text(
@@ -80,26 +80,31 @@ class _FliterState extends State<Fliter> {
             width: double.infinity,
             child: Row(
               children: [
-                Expanded(child: RoundTextField(hintText: "Chọn ngày")),
-                Expanded(child: RoundTextField(hintText: "Chọn giờ")),
+                Expanded(flex: 3, child: RoundTextField(hintText: "Chọn ngày")),
+                SizedBox(width: 5),
+                Expanded(flex: 2, child: RoundTextField(hintText: "Chọn giờ")),
               ],
             )),
-        Container(
-          child: Wrap(
-            children: SPECIALTIES_OPTION
-                .map((e) => Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: RoundButon(
-                        text: e.name,
-                        onPressed: () {
-                          context.read<FilterProvider>().updateSpecialties(e);
-                        },
-                        isSelected: (FilterProvider.specialties == null &&
-                                e.key == null) ||
-                            (FilterProvider.specialties != null &&
-                                FilterProvider.specialties!.key == e.key))))
-                .toList(),
-          ),
+        const SizedBox(
+          height: 10,
+        ),
+        Wrap(
+          children: SPECIALTIES_OPTION
+              .map((e) => Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: RoundButon(
+                      text: e.name,
+                      onPressed: () {
+                        context.read<FilterProvider>().updateSpecialties(e);
+                      },
+                      isSelected: (FilterProvider.specialties == null &&
+                              e.key == null) ||
+                          (FilterProvider.specialties != null &&
+                              FilterProvider.specialties!.key == e.key))))
+              .toList(),
+        ),
+        const SizedBox(
+          height: 10,
         ),
         RoundButtonOutLined(
             child: TextButton(

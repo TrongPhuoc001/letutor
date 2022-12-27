@@ -115,7 +115,7 @@ class _HomeBannerState extends State<HomeBanner> {
             style: const TextStyle(color: Colors.white),
           ),
           SizedBox(
-            height: 5,
+            height: 10,
           ),
           SizedBox(
             height: 50,
