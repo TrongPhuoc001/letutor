@@ -33,3 +33,20 @@ Map<String, String> SPECIALTIES = {
   "toefl": "TOEFL",
   "toeic": "TOEIC"
 };
+
+List<Specialty> SUBJECTS = [
+  const Specialty(key: "english-for-kids", name: "Tiếng Anh cho trẻ em"),
+  const Specialty(key: "business-english", name: "Tiếng Anh cho công việc"),
+  const Specialty(key: "conversational-english", name: "Giao tiếp"),
+];
+
+List<Specialty> TEST_PREPARATIONS = [
+  const Specialty(name: "STARTERS", key: "starters"),
+  const Specialty(name: "MOVERS", key: "movers"),
+  const Specialty(name: "FLYERS", key: "flyers"),
+  const Specialty(name: "KET", key: "ket"),
+  const Specialty(name: "PET", key: "pet"),
+  const Specialty(name: "IELTS", key: "ielts"),
+  const Specialty(name: "TOEFL", key: "toefl"),
+  const Specialty(name: "TOEIC", key: "toeic")
+];

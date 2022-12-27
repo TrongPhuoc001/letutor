@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:lettutor/api/base.api.dart';
 import 'package:lettutor/model/user.dart';
 import 'package:lettutor/ui/my_app.dart';
+import 'package:http_parser/http_parser.dart';
 
 class UserApi {
   static String URL = 'https://sandbox.api.lettutor.com/user/';
@@ -23,16 +25,18 @@ class UserApi {
     }
   }
 
-  static Future<User> updateUser({name, country, birthday, level}) async {
+  static Future<User> updateUser(
+      {name, country, birthday, level, learnTopics, testPreparations}) async {
     try {
       var res = await BaseApi.put("user/info", {
         'name': name,
         'country': country,
         'birthday': birthday,
         'level': level,
+        'learnTopics': learnTopics,
+        'testPreparations': testPreparations
       });
       if (res.statusCode == 200) {
-        print(jsonDecode(res.body));
         try {
           User u = User.fromJson(jsonDecode(res.body)['user']);
           return u;
@@ -62,6 +66,32 @@ class UserApi {
     } catch (err) {
       print(err);
       throw Exception('Failed to manage favorite tutor');
+    }
+  }
+
+  static Future<Map<String, dynamic>> uploadAvatar(dynamic bytes) async {
+    String url = 'user/uploadAvatar';
+
+    try {
+      StreamedResponse resStream = await BaseApi.postFormData(
+          url,
+          http.MultipartFile.fromBytes('avatar', bytes,
+              filename: 'avatar.png', contentType: MediaType('image', 'png')));
+      var res = await http.Response.fromStream(resStream);
+      if (res.statusCode == 200) {
+        try {
+          Map<String, dynamic> u = jsonDecode(res.body);
+          return u;
+        } catch (err) {
+          print(err);
+          throw Exception('Failed to upload avatar');
+        }
+      } else {
+        Map<String, dynamic> u = jsonDecode(res.body);
+        throw u['message'];
+      }
+    } catch (err) {
+      throw Exception(err);
     }
   }
 }

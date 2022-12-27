@@ -1,15 +1,21 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:lettutor/api/base.api.dart';
 import 'package:lettutor/api/user/user.api.dart';
 import 'package:lettutor/constants/countries.dart';
 import 'package:lettutor/constants/languages.dart';
 import 'package:lettutor/constants/level_user.dart';
+import 'package:lettutor/constants/specialty.dart';
 import 'package:lettutor/themes/main_theme.dart';
 import 'package:lettutor/ui/profile/widget/want_to_learn.dart';
 import 'package:lettutor/widgets/lable_text_field.dart';
+import 'package:lettutor/widgets/multi_select_dialog.dart';
 import 'package:lettutor/widgets/notification.dart';
 import 'package:lettutor/widgets/round_text_field.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,10 +49,39 @@ class _ProfileState extends State<Profile> {
     ),
   );
 
+  String avatar = '';
+
+  List<LearnTopics> learnTopics = [];
+  List<LearnTopics> testPreparation = [];
+
+  List<int> _selected_learnTopics = [];
+  List<int> _selected_testPreparation = [];
+
+  void getLearnTopics() async {
+    var resLearnTopic = await BaseApi.get('learn-topic');
+    var resTestPrepare = await BaseApi.get('test-preparation');
+    List<dynamic> learnTopicsMap = jsonDecode(resLearnTopic.body);
+    List<dynamic> testPreparationMap = jsonDecode(resTestPrepare.body);
+
+    List<LearnTopics> learnTopicsList = [];
+    learnTopicsMap.forEach((value) {
+      learnTopicsList.add(LearnTopics.fromJson(value));
+    });
+    List<LearnTopics> testPreparationList = [];
+    testPreparationMap.forEach((value) {
+      testPreparationList.add(LearnTopics.fromJson(value));
+    });
+    setState(() {
+      learnTopics = learnTopicsList;
+      testPreparation = testPreparationList;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    avatar = widget.user.avatar!;
     controllers["name"]!.text = widget.user.name ?? '';
     controllers["email"]!.text = widget.user.email ?? '';
     controllers["country"]!.text = widget.user.country ?? '';
@@ -54,6 +89,11 @@ class _ProfileState extends State<Profile> {
     controllers["birthday"]!.text = widget.user.birthday ?? '';
     controllers["level"]!.text = widget.user.level ?? '';
     controllers["schedule"]!.text = widget.user.avatar ?? '';
+    _selected_learnTopics =
+        widget.user.learnTopics!.map((e) => e.id!).toList() ?? [];
+    _selected_testPreparation =
+        widget.user.testPreparations!.map((e) => e.id!).toList() ?? [];
+    getLearnTopics();
   }
 
   @override
@@ -80,8 +120,33 @@ class _ProfileState extends State<Profile> {
                         padding: const EdgeInsets.all(20),
                         child: Column(children: [
                           InkWell(
-                            onTap: () {
-                              
+                            onTap: () async {
+                              ImagePicker _picker = ImagePicker();
+                              XFile? image = await _picker.pickImage(
+                                  source: ImageSource.gallery);
+                              if (image != null) {
+                                try {
+                                  var bytes = await image.readAsBytes();
+                                  Map<String, dynamic> userResponse =
+                                      await UserApi.uploadAvatar(bytes);
+                                  User user =
+                                      context.read<UserProvider>().currentUser;
+                                  user.avatar = userResponse["avatar"];
+                                  context.read<UserProvider>().setUser(user);
+                                  prefs.setString("user", jsonEncode(user));
+                                  setState(() {
+                                    avatar = userResponse["avatar"];
+                                  });
+                                } catch (err) {
+                                  print(err);
+                                  notification(
+                                      context: context,
+                                      message: err.toString(),
+                                      color: Colors.red);
+                                }
+                              } else {
+                                print('No image selected.');
+                              }
                             },
                             child: Container(
                               width: 100,
@@ -91,7 +156,7 @@ class _ProfileState extends State<Profile> {
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
                                   fit: BoxFit.fill,
-                                  image: NetworkImage(widget.user.avatar!),
+                                  image: NetworkImage(avatar),
                                 ),
                               ),
                             ),
@@ -207,14 +272,29 @@ class _ProfileState extends State<Profile> {
                                 },
                               )),
                           const SizedBox(height: 15),
-                          //
                           LabelTextField(
                               title: "Muốn học",
                               isImportant: true,
-                              child: WantToLearnWrap(topics: [
-                                ...widget.user.learnTopics!,
-                                //...widget.user.testPreparations!
-                              ])),
+                              child: Container()),
+                          MultiSelectDialog(
+                            items: learnTopics,
+                            selectedItems: _selected_learnTopics,
+                            title: "Subject",
+                            onChanged: (value) {
+                              setState(() {
+                                _selected_learnTopics = value;
+                              });
+                            },
+                          ),
+                          MultiSelectDialog(
+                              items: testPreparation,
+                              selectedItems: _selected_testPreparation,
+                              title: "Luyện thi",
+                              onChanged: (value) {
+                                setState(() {
+                                  _selected_testPreparation = value;
+                                });
+                              }),
                           const SizedBox(height: 15),
                           //
                           LabelTextField(
@@ -235,14 +315,18 @@ class _ProfileState extends State<Profile> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       UserApi.updateUser(
-                                              name: controllers["name"]!.text,
-                                              country:
-                                                  controllers["country"]!.text,
-                                              birthday:
-                                                  controllers["birthday"]!.text,
-                                              level: controllers["level"]!.text)
-                                          .then((value) {
-                                        print(value.toJson());
+                                        name: controllers["name"]!.text,
+                                        country: controllers["country"]!.text,
+                                        birthday: controllers["birthday"]!.text,
+                                        level: controllers["level"]!.text,
+                                        learnTopics: _selected_learnTopics
+                                            .map((e) => e.toString())
+                                            .toList(),
+                                        testPreparations:
+                                            _selected_testPreparation
+                                                .map((e) => e.toString())
+                                                .toList(),
+                                      ).then((value) {
                                         prefs.setString(
                                             "user", jsonEncode(value.toJson()));
                                         Provider.of<UserProvider>(context,
@@ -252,8 +336,8 @@ class _ProfileState extends State<Profile> {
                                             context: context,
                                             message: "Cập nhật thành công");
                                       }).catchError((error) => notification(
-                                              context: context,
-                                              message: error.toString()));
+                                          context: context,
+                                          message: error.toString()));
                                     },
                                     child: const Text("Lưu thay đổi"),
                                     style: ElevatedButton.styleFrom(

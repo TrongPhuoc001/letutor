@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jitsi_meet_wrapper/jitsi_meet_wrapper.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:lettutor/model/user.dart';
 
 class MeetingScreen extends StatefulWidget {
-  const MeetingScreen({Key? key}) : super(key: key);
-
+  MeetingScreen({required this.meetingLink, Key? key}) : super(key: key);
+  String meetingLink;
   @override
   _MeetingState createState() => _MeetingState();
 }
@@ -18,7 +19,7 @@ class _MeetingState extends State<MeetingScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Jitsi Meet Wrapper Test')),
+        appBar: AppBar(title: const Text('Join class')),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: buildMeetConfig(),
@@ -28,6 +29,8 @@ class _MeetingState extends State<MeetingScreen> {
   }
 
   Widget buildMeetConfig() {
+    String token = widget.meetingLink.split('token=')[1];
+    Map<String, dynamic> payload = Jwt.parseJwt(token);
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -54,7 +57,7 @@ class _MeetingState extends State<MeetingScreen> {
             height: 64.0,
             width: double.maxFinite,
             child: ElevatedButton(
-              onPressed: () => _joinMeeting(),
+              onPressed: () => _joinMeeting(roomName: payload['room']),
               child: const Text(
                 "Join Meeting",
                 style: TextStyle(color: Colors.white),
@@ -89,13 +92,12 @@ class _MeetingState extends State<MeetingScreen> {
     });
   }
 
-  _joinMeeting() async {
+  _joinMeeting({required String roomName}) async {
     Map<FeatureFlag, Object> featureFlags = {};
 
     // Define meetings options here
     var options = JitsiMeetingOptions(
-      roomNameOrUrl:
-          'f569c202-7bbf-4620-af77-ecc1419a6b28-4d54d3d7-d2a9-42e5-97a2-5ed38af5789a-f569c202-7bbf-4620-af77-ecc1419a6b28',
+      roomNameOrUrl: roomName,
       serverUrl: 'https://meet.lettutor.com',
       isAudioMuted: isAudioMuted,
       isAudioOnly: isAudioOnly,

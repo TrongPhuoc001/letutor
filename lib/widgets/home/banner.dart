@@ -32,18 +32,24 @@ class _HomeBannerState extends State<HomeBanner> {
             DateTime.now().millisecondsSinceEpoch)
         .toList();
 
-    DateTime upComming = DateTime.fromMillisecondsSinceEpoch(
-        schedules[0].scheduleDetailInfo!.startPeriodTimestamp!);
+    DateTime upComming = schedules.length > 0
+        ? DateTime.fromMillisecondsSinceEpoch(
+            schedules[0].scheduleDetailInfo!.startPeriodTimestamp!)
+        : DateTime.now();
 
-    DateTime end = DateTime.fromMillisecondsSinceEpoch(
-        schedules[0].scheduleDetailInfo!.endPeriodTimestamp!);
+    DateTime end = schedules.length > 0
+        ? DateTime.fromMillisecondsSinceEpoch(
+            schedules[0].scheduleDetailInfo!.endPeriodTimestamp!)
+        : DateTime.now();
     DateTime now = DateTime.now();
 
-    Timer timer = new Timer(new Duration(seconds: 1), () {
-      setState(() {
-        timeLeft = upComming.difference(now).inSeconds;
-      });
-    });
+    Timer? timer = schedules.length > 0
+        ? new Timer(new Duration(seconds: 1), () {
+            setState(() {
+              timeLeft = upComming.difference(now).inSeconds;
+            });
+          })
+        : null;
     return Container(
       padding: const EdgeInsets.all(10),
       height: 250,
@@ -62,7 +68,7 @@ class _HomeBannerState extends State<HomeBanner> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          widget.schedules.length == 0
+          schedules.length == 0
               ? const Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                   child: Text("Bạn không có buổi học nào.",
@@ -75,8 +81,7 @@ class _HomeBannerState extends State<HomeBanner> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                      child: Text(
-                          "Bạn có ${widget.schedules.length} buổi học .",
+                      child: Text("Bạn có ${schedules.length} buổi học .",
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24,
@@ -93,7 +98,7 @@ class _HomeBannerState extends State<HomeBanner> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                       child: Text(
-                          "${readTimestamp(widget.schedules[0].scheduleDetailInfo!.startPeriodTimestamp!)} ${upComming.hour}:${upComming.minute} - ${end.hour}:${end.minute}.",
+                          "${readTimestamp(schedules[0].scheduleDetailInfo!.startPeriodTimestamp!)} ${upComming.hour}:${upComming.minute} - ${end.hour}:${end.minute}.",
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -117,17 +122,25 @@ class _HomeBannerState extends State<HomeBanner> {
           SizedBox(
             height: 5,
           ),
-          SizedBox(
-            height: 50,
-            width: 150,
-            child: TextButton(
-                style: TextButton.styleFrom(backgroundColor: Colors.white),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MeetingScreen()));
-                },
-                child: Text('Tham gia buổi học')),
-          )
+          schedules.length > 0
+              ? SizedBox(
+                  height: 50,
+                  width: 150,
+                  child: TextButton(
+                      style:
+                          TextButton.styleFrom(backgroundColor: Colors.white),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MeetingScreen(
+                                      meetingLink:
+                                          schedules[0].studentMeetingLink!,
+                                    )));
+                      },
+                      child: Text('Tham gia buổi học')),
+                )
+              : SizedBox(),
         ],
       ),
     );

@@ -15,15 +15,28 @@ class BaseApi {
   };
 
   static get(String url) {
+    headers['authorization'] = 'Bearer ${tokenModel.access?.token}';
     return http.get(Uri.parse(URL + url), headers: headers);
   }
 
   static post(String url, dynamic data) {
+    headers['authorization'] = 'Bearer ${tokenModel.access?.token}';
     return http.post(Uri.parse(URL + url),
         headers: headers, body: jsonEncode(data));
   }
 
+  static postFormData(String url, dynamic data) {
+    headers['authorization'] = 'Bearer ${tokenModel.access?.token}';
+    Map<String, String> newHeader = BaseApi.headers;
+    newHeader['Content-Type'] = 'multipart/form-data';
+    var request = http.MultipartRequest('POST', Uri.parse(URL + url));
+    request.headers.addAll(newHeader);
+    request.files.add(data);
+    return request.send();
+  }
+
   static put(String url, dynamic data) {
+    headers['authorization'] = 'Bearer ${tokenModel.access?.token}';
     return http.put(Uri.parse(URL + url),
         headers: headers, body: jsonEncode(data));
   }

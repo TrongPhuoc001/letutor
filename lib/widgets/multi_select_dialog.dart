@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/model/user.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class MultiSelectDialog extends StatefulWidget {
-  final List<String> items;
-  final List<String> selectedItems;
-  final Function(List<String>)? onChanged;
+  final List<LearnTopics> items;
+  final List<int> selectedItems;
+  final Function(List<int>)? onChanged;
   final String title;
 
   const MultiSelectDialog(
@@ -20,7 +21,7 @@ class MultiSelectDialog extends StatefulWidget {
 }
 
 class _MultiSelectDialogState extends State<MultiSelectDialog> {
-  List<String> _selectedItems = [];
+  List<int> _selectedItems = [];
   bool _isShow = false;
 
   @override
@@ -31,24 +32,27 @@ class _MultiSelectDialogState extends State<MultiSelectDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiSelectDialogField(
-        title: Text(widget.title),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.grey),
-        ),
-        buttonText: Text(
-          widget.title,
-          style: TextStyle(color: Colors.grey),
-        ),
-        buttonIcon: Icon(
-          Icons.arrow_drop_down,
-          size: 8,
-          color: Colors.grey,
-        ),
-        items: widget.items.map((e) => MultiSelectItem(e, e)).toList(),
-        onConfirm: (values) {
-          widget.onChanged?.call(values);
-        });
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+      ),
+      child: MultiSelectDialogField(
+          title: Text(widget.title),
+          initialValue: widget.selectedItems,
+          buttonText: Text(
+            widget.title,
+            style: TextStyle(color: Colors.grey),
+          ),
+          buttonIcon: Icon(
+            Icons.arrow_drop_down,
+            size: 8,
+            color: Colors.grey,
+          ),
+          items:
+              widget.items.map((e) => MultiSelectItem(e.id!, e.name!)).toList(),
+          onConfirm: (values) {
+            widget.onChanged?.call(values);
+          }),
+    );
   }
 }

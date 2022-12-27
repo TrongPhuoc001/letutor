@@ -286,7 +286,6 @@ class ScheduleApi {
         return throw Exception('Failed to load Schedule');
       }
     } catch (e) {
-      print(e);
       return throw Exception('Failed to load Schedule');
     }
   }
@@ -303,7 +302,6 @@ class ScheduleApi {
               StudentScheduleResponse.fromJson(json.decode(res.body));
           return response;
         } catch (err) {
-          print(err);
           return throw Exception('Failed to load Schedule');
         }
       } else {

@@ -10,6 +10,8 @@ import 'package:lettutor/widgets/home/pagination.dart';
 import 'package:lettutor/widgets/teacher/teacher_list.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/user.dart';
+
 class FindTeacher extends StatefulWidget {
   const FindTeacher({super.key});
 
@@ -21,7 +23,7 @@ class _FindTeacherState extends State<FindTeacher> {
   Future<TutorMoreResponse> teacherList = TutorApi.getMoreTutors(1);
   int page = 1;
 
-  Future<dynamic> getBannerInfo() async {
+  Future<dynamic> getBannerInfo(User user) async {
     NextScheduleResponse stuSche = await ScheduleApi.getNextSchedule();
     int total = await ScheduleApi.getTotalHours();
     return [stuSche.data!, total];
@@ -42,6 +44,7 @@ class _FindTeacherState extends State<FindTeacher> {
         });
       }
     });
+    User user = context.watch<UserProvider>().currentUser!;
     return FutureBuilder(
         future: teacherList,
         builder: ((context, snapshot) {
@@ -52,7 +55,7 @@ class _FindTeacherState extends State<FindTeacher> {
                 context: context,
                 child: Column(children: [
                   FutureBuilder(
-                      future: getBannerInfo(),
+                      future: getBannerInfo(user),
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data != null) {
                           List<dynamic> bannerInfo =
