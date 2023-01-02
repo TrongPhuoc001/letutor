@@ -1,4 +1,5 @@
 Map<String, String> COUNTRIES = {
+  '': 'Select a country',
   'AF': 'Afghanistan',
   'AL': 'Albania',
   'DZ': 'Algeria',
@@ -251,8 +252,8 @@ Map<String, String> COUNTRIES = {
 };
 
 Map<int, String> CANCEL_COURSE = {
-  1: 'Reschedule at another time',
-  2: 'Busy at that time',
-  3: 'Asked by the tutor',
-  4: 'Other'
+  1: 'Đổi thời gian học',
+  2: 'Bận vào khoảng thời gian này',
+  3: 'Được giáo viên yêu cầu',
+  4: 'Lý do khác'
 };

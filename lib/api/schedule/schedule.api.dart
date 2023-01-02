@@ -373,4 +373,22 @@ class ScheduleApi {
       return throw Exception('Failed to load Schedule');
     }
   }
+
+  static Future<dynamic> cancelSchedule(
+      int cancelReasonId, String note, String scheduleDetailId) async {
+    try {
+      var res = await BaseApi.delete('booking/schedule-detail', {
+        'cancelInfo': {'cancelReasonId': cancelReasonId, 'note': note},
+        'scheduleDetailId': scheduleDetailId
+      });
+      if (res.statusCode == 200) {
+        return json.decode(res.body);
+      } else {
+        return throw Exception('Failed to cancel Schedule');
+      }
+    } catch (err) {
+      print(err);
+      return throw Exception('Failed to cancel Schedule');
+    }
+  }
 }

@@ -64,6 +64,21 @@ class AuthApi {
     }
   }
 
+  static Future<LoginResponse> facebookLogin(String facebookToken) async {
+    var response = await http.post(Uri.parse(URL + 'facebook'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'access_token': facebookToken,
+        }));
+    if (response.statusCode == 200) {
+      return LoginResponse.fromJson(jsonDecode(response.body));
+    } else {
+      throw jsonDecode(response.body)['message'];
+    }
+  }
+
   static Future<String> forgotPassword(String email) async {
     var res = await http.post(Uri.parse(URL + 'forgotPassword'),
         headers: <String, String>{

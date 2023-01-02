@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:lettutor/api/schedule/schedule.api.dart';
 import 'package:lettutor/constants/countries.dart';
 
 import 'package:lettutor/model/schedule_model.dart';
+import 'package:lettutor/ui/schedule/shedule.dart';
+import 'package:lettutor/widgets/notification.dart';
 import 'package:lettutor/widgets/teacher/book_chedule_item.dart';
 import 'package:lettutor/widgets/teacher/teacher_short_info.dart';
 
@@ -155,14 +158,14 @@ class ScheduleItem extends StatelessWidget {
                           scheduleItem.scheduleDetailInfo!.scheduleInfo!
                                   .tutorInfo!.avatar ??
                               'https://www.lewesac.co.uk/wp-content/uploads/2017/12/default-avatar.jpg',
-                          width: 100,
-                          height: 100,
+                          width: 80,
+                          height: 80,
                           fit: BoxFit.scaleDown,
                           errorBuilder: (context, error, stackTrace) {
                             return Image.network(
                                 'https://www.lewesac.co.uk/wp-content/uploads/2017/12/default-avatar.jpg',
-                                width: 100,
-                                height: 100,
+                                width: 80,
+                                height: 80,
                                 fit: BoxFit.fill);
                           },
                         ),
@@ -259,7 +262,26 @@ class ScheduleItem extends StatelessWidget {
                                 'Báo cáo',
                                 style: TextStyle(color: Colors.white),
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                try {
+                                  await ScheduleApi.cancelSchedule(
+                                      int.parse(infoController.text),
+                                      reportController.text,
+                                      scheduleItem.id!);
+                                  notification(
+                                      context: context,
+                                      message: 'Hủy buổi học thành công');
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              ScheduleScreen()));
+                                } catch (e) {
+                                  notification(
+                                      context: context,
+                                      message: 'Hủy buổi học thất bại');
+                                }
+                              },
                             ))
                       ],
                     )

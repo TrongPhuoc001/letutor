@@ -99,7 +99,7 @@ class _TeacherDetailState extends State<TeacherDetail> {
                                       )),
                                   InkWell(
                                     onTap: () {
-                                      report(context);
+                                      report(context, tutorDetail.user!.id);
                                     },
                                     child: IconText(
                                       iconData: Icons.report_outlined,
@@ -251,7 +251,7 @@ class _TeacherDetailState extends State<TeacherDetail> {
     );
   }
 
-  report(context) {
+  report(context, tutorId) {
     final TextEditingController textReportController = TextEditingController();
     showBottomSheet(
         context: context,
@@ -316,7 +316,24 @@ class _TeacherDetailState extends State<TeacherDetail> {
                                 'Báo cáo',
                                 style: TextStyle(color: Colors.white),
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                if (textReportController.text.length == 0) {
+                                  return;
+                                } else {
+                                  try {
+                                    await TutorApi.reportTutor(
+                                        textReportController.text, tutorId);
+                                    notification(
+                                        context: context,
+                                        message: 'Báo cáo thành công');
+                                    Navigator.pop(context);
+                                  } catch (e) {
+                                    notification(
+                                        context: context,
+                                        message: 'Báo cáo thất bại');
+                                  }
+                                }
+                              },
                             ))
                       ],
                     )

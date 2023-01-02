@@ -1,4 +1,5 @@
 Map<String, String> LEVELS_USER = {
+  '': 'Select level',
   'BEGINNER': 'Pre A1 (Beginner)',
   'HIGHER_BEGINNER': 'A1 (Higher-Beginner)',
   'PRE_INTERMEDIATE': 'A2 (Pre-Intermediate)',

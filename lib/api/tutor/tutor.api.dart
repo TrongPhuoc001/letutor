@@ -263,4 +263,17 @@ class TutorApi {
       throw Exception('Failed to load tutors review');
     }
   }
+
+  static Future<dynamic> reportTutor(String content, String tutorId) async {
+    var res = await BaseApi.post("report", {
+      "content": content,
+      "tutorId": tutorId,
+    });
+    if (res.statusCode == 200) {
+      var data = jsonDecode(res.body);
+      return data;
+    } else {
+      throw Exception('Failed to report tutor');
+    }
+  }
 }

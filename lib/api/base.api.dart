@@ -40,4 +40,10 @@ class BaseApi {
     return http.put(Uri.parse(URL + url),
         headers: headers, body: jsonEncode(data));
   }
+
+  static delete(String url, dynamic data) {
+    headers['authorization'] = 'Bearer ${tokenModel.access?.token}';
+    return http.delete(Uri.parse(URL + url),
+        headers: headers, body: jsonEncode(data));
+  }
 }

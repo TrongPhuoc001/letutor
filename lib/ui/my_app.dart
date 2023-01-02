@@ -85,7 +85,6 @@ class UserProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove("user");
     prefs.remove("tokens");
-    notifyListeners();
   }
 
   bool get isLoggedIn => user != null;

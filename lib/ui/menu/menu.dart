@@ -39,13 +39,6 @@ class Menu extends StatelessWidget {
           title: 'Đăng ký làm gia sư',
           icon: Icons.assessment,
           navigate: FindTeacher()),
-      MenuItem(
-          title: 'Đăng xuất',
-          icon: Icons.logout,
-          navigate: Login(),
-          aditionalAction: () {
-            context.read<UserProvider>().logout();
-          }),
     ];
 
     List<Widget> menuItemsWidget = [
@@ -99,14 +92,41 @@ class Menu extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    if (item.aditionalAction != null) {
-                      item.aditionalAction!();
-                    }
                     Navigator.push(context,
                         MaterialPageRoute(builder: (builder) => item.navigate));
                   },
                 ))
-            .toList();
+            .toList() +
+        [
+          InkWell(
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              width: double.infinity,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.logout,
+                    color: Colors.blue[400],
+                    size: 40,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    child: Text("Logout",
+                        style: const TextStyle(fontWeight: FontWeight.w600)),
+                  ),
+                ],
+              ),
+            ),
+            onTap: () {
+              Provider.of<UserProvider>(context, listen: false).logout();
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const Login()),
+                  (route) => false);
+            },
+          )
+        ];
     return MainTheme(
         context: context,
         onMenu: true,
@@ -125,13 +145,8 @@ class Menu extends StatelessWidget {
 }
 
 class MenuItem {
-  MenuItem(
-      {required this.title,
-      required this.icon,
-      required this.navigate,
-      this.aditionalAction});
+  MenuItem({required this.title, required this.icon, required this.navigate});
   final String title;
   final IconData icon;
   final Widget navigate;
-  Function? aditionalAction;
 }

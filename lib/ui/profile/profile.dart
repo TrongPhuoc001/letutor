@@ -200,7 +200,7 @@ class _ProfileState extends State<Profile> {
                               isImportant: true,
                               child: DropdownButtonFormField(
                                 isExpanded: true,
-                                value: controllers["country"]!.text,
+                                value: controllers["country"]?.text,
                                 items: COUNTRIES.entries.map((entry) {
                                   return DropdownMenuItem<String>(
                                     value: entry.key,
