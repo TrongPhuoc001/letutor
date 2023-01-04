@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/constants/countries.dart';
 import 'package:lettutor/ui/my_app.dart';
 import 'package:lettutor/widgets/common/button/round_button.dart';
 import 'package:lettutor/widgets/common/button/round_button_outlined.dart';
@@ -18,7 +19,6 @@ class Fliter extends StatefulWidget {
 
 class _FliterState extends State<Fliter> {
   final FocusNode focusNode = FocusNode();
-  List<String> selectedItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +44,12 @@ class _FliterState extends State<Fliter> {
         ),
         SizedBox(height: 10),
         DropDownMultiSelect(
-          onChanged: (List<String> x) {
-            setState(() {
-              selectedItems = x;
-            });
+          onChanged: (List<String> values) {
+            context.read<FilterProvider>().updateNation(values);
           },
           whenEmpty: "Chọn quốc gia",
-          options: ['Bản ngữ', "Việt Nam", 'Nước ngoài'],
-          selectedValues: selectedItems,
+          options: NAITON_OPTION.entries.map((e) => e.key).toList(),
+          selectedValues: FilterProvider.nation!,
           hintStyle: TextStyle(color: Colors.grey),
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.fromLTRB(5, 5, 5, 5),

@@ -96,7 +96,7 @@ class UserProvider extends ChangeNotifier {
 
 class FilterProvider extends ChangeNotifier {
   static TextEditingController searchController = TextEditingController();
-  static String? nation;
+  static List<String> nation = [];
   static DateTime? date;
   static DateTimeRange? time;
   static Specialty? specialties;
@@ -105,7 +105,7 @@ class FilterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateNation(String? nation) {
+  void updateNation(List<String> nation) {
     FilterProvider.nation = nation;
     notifyListeners();
   }
@@ -131,7 +131,7 @@ class FilterProvider extends ChangeNotifier {
 
   void clear() {
     FilterProvider.searchController.text = '';
-    FilterProvider.nation = null;
+    FilterProvider.nation = [];
     FilterProvider.date = null;
     FilterProvider.time = null;
     FilterProvider.specialties = null;

@@ -43,7 +43,7 @@ class TutorShortInfo {
   String? isNative;
   int? price;
   bool? isOnline;
-  String? isfavoritetutor;
+  bool? isfavoritetutor;
 
   TutorShortInfo(
       {this.level,
@@ -135,11 +135,20 @@ class TutorShortInfo {
     languages = json['languages'];
     specialties = json['specialties'];
     resume = json['resume'];
-    rating = json['rating'];
+    if (json['rating'] != null) {
+      rating = json['rating'];
+    } else {
+      rating = 0.0;
+    }
+
     isNative = json['isNative'];
     price = json['price'];
     isOnline = json['isOnline'];
-    isfavoritetutor = json['isfavoritetutor'];
+    if (json['isfavoritetutor'] != null) {
+      isfavoritetutor = json['isfavoritetutor'];
+    } else {
+      isfavoritetutor = false;
+    }
   }
 
   Map<String, dynamic> toJson() {

@@ -8,7 +8,9 @@ Widget TeacherList(List<TutorShortInfo> teacherList, context) {
       : teacherList
           .map((teacher) => TeacherCard(
                 teacher: teacher,
-                isFavorite: teacher.isfavoritetutor == '1' ? true : false,
+                isFavorite: teacher.isfavoritetutor != null
+                    ? teacher.isfavoritetutor!
+                    : false,
               ))
           .toList();
   return Padding(

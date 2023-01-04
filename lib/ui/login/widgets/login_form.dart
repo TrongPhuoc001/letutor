@@ -10,6 +10,7 @@ import 'package:lettutor/ui/my_app.dart';
 import 'package:lettutor/ui/teacher/find_teacher.dart';
 import 'package:lettutor/widgets/notification.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:validators/validators.dart';
 
@@ -97,11 +98,19 @@ class _LoginFormState extends State<LoginForm> {
               )),
           widget.type == "login"
               ? TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ForgetPassword()));
+                  onPressed: () async {
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const ForgetPassword()));
+                    try {
+                      throw Exception("Test");
+                    } catch (exception, stackTrace) {
+                      await Sentry.captureException(
+                        exception,
+                        stackTrace: stackTrace,
+                      );
+                    }
                   },
                   child: const Text('Quên mật khẩu?'))
               : SizedBox(),

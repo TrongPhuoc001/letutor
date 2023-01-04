@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lettutor/api/courses/course.api.dart';
+import 'package:lettutor/constants/levels.dart';
 import 'package:lettutor/model/course_model.dart';
 import 'package:lettutor/themes/main_theme.dart';
 import 'package:lettutor/ui/courses/widgets/course_card.dart';
 import 'package:lettutor/widgets/home/pagination.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:multiselect/multiselect.dart';
+
+import '../../widgets/multi_select_dialog.dart';
 
 class Course extends StatefulWidget {
   const Course({Key? key}) : super(key: key);
@@ -17,13 +23,44 @@ class _CourseState extends State<Course> {
   int page = 1;
   int limit = 10;
   int tab = 0;
+  List<Category> categories = [];
+  List<String> _selected_categories = [];
+  List<int> _selected_levels = [];
+  String? _selected_sort = null;
+  TextEditingController _searchController = TextEditingController();
 
   List<String> urls = ['course', 'e-book', 'material/interactive-e-book'];
+  Future<List<Category>> getCategory() async {
+    try {
+      CategoryResponse res = await CourseApi.getCategories();
+      return res.rows!;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+    getCategory().then((value) {
+      setState(() {
+        categories = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: CourseApi.getCourseList(page, limit, urls[tab]),
+        future: CourseApi.getCourseList(page, limit, urls[tab], filter: {
+          'categories': _selected_categories,
+          'levels': _selected_levels,
+          'sort': _selected_sort,
+          'search': _searchController.text
+        }),
         builder: ((context, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             CourseListResponse res = snapshot.data as CourseListResponse;
@@ -51,8 +88,9 @@ class _CourseState extends State<Course> {
                                     fontSize: 28, fontWeight: FontWeight.bold)),
                             Row(
                               children: [
-                                const Expanded(
+                                Expanded(
                                     child: TextField(
+                                  controller: _searchController,
                                   decoration: InputDecoration(
                                     isDense: true,
                                     contentPadding:
@@ -102,8 +140,61 @@ class _CourseState extends State<Course> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          FixedTextField(hintText: "Chọn cấp độ"),
-                          FixedTextField(hintText: "Chọn danh mục"),
+                          Container(
+                            width: 177,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: MultiSelectDialogField(
+                                title: Text("Chọn cấp độ"),
+                                initialValue: _selected_levels,
+                                buttonText: Text(
+                                  "Chọn cấp độ",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                buttonIcon: Icon(
+                                  Icons.arrow_drop_down,
+                                  size: 8,
+                                  color: Colors.grey,
+                                ),
+                                items: LEVELS
+                                    .asMap()
+                                    .entries
+                                    .map((e) => MultiSelectItem(e.key, e.value))
+                                    .toList(),
+                                onConfirm: (values) {
+                                  setState(() {
+                                    _selected_levels = values;
+                                  });
+                                }),
+                          ),
+                          Container(
+                            width: 177,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: MultiSelectDialogField(
+                                title: Text("Chọn danh mục"),
+                                initialValue: _selected_categories,
+                                buttonText: Text(
+                                  "Chọn danh mục",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                buttonIcon: Icon(
+                                  Icons.arrow_drop_down,
+                                  size: 8,
+                                  color: Colors.grey,
+                                ),
+                                items: categories
+                                    .map(
+                                        (e) => MultiSelectItem(e.id!, e.title!))
+                                    .toList(),
+                                onConfirm: (values) {
+                                  setState(() {
+                                    _selected_categories = values;
+                                  });
+                                }),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -112,7 +203,49 @@ class _CourseState extends State<Course> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          FixedTextField(hintText: "Sắp xếp theo độ khó"),
+                          SizedBox(
+                            width: 177,
+                            child: DropdownButtonFormField(
+                              isExpanded: true,
+                              value: _selected_sort,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                hintText: "Sắp xếp",
+                                hintStyle: TextStyle(
+                                    color: Color.fromRGBO(217, 217, 217, 1),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              items: [
+                                DropdownMenuItem<String>(
+                                  value: "DESC",
+                                  child: Text("Độ khó giảm dần"),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: "ASC",
+                                  child: Text("Độ khó tăng dần"),
+                                )
+                              ],
+                              onChanged: (Object? value) {
+                                setState(() {
+                                  _selected_sort = value as String;
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 177,
+                            child: ElevatedButton(
+                                child: Text('Đặt lại'),
+                                onPressed: () {
+                                  setState(() {
+                                    _selected_categories = [];
+                                    _selected_levels = [];
+                                    _selected_sort = null;
+                                    _searchController.text = '';
+                                  });
+                                }),
+                          )
                         ],
                       ),
                       Padding(

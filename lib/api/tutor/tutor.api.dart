@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:lettutor/api/base.api.dart';
+import 'package:lettutor/constants/countries.dart';
 import 'package:lettutor/model/favorite_tutor.dart';
 import 'package:lettutor/model/review_model.dart';
 import 'package:lettutor/model/token_model.dart';
@@ -141,8 +142,13 @@ class Filters {
   String? date;
   List<String>? specialties;
   List<int>? tutoringTimeAvailable;
+  Map<String, bool>? nationality;
 
-  Filters({this.date, this.specialties, this.tutoringTimeAvailable});
+  Filters(
+      {this.date,
+      this.specialties,
+      this.tutoringTimeAvailable,
+      this.nationality});
 
   Filters.fromJson(Map<String, dynamic> json) {
     date = json['date'];
@@ -155,6 +161,7 @@ class Filters {
     data['date'] = this.date;
     data['specialties'] = this.specialties;
     data['tutoringTimeAvailable'] = this.tutoringTimeAvailable;
+    data['nationality'] = this.nationality;
     return data;
   }
 }
@@ -205,6 +212,46 @@ class TutorApi {
   }
 
   static Future<TutorMoreResponse> searchTutors() async {
+    Map<String, bool> nationality = {};
+    if (FilterProvider.nation != null && FilterProvider.nation.length > 0) {
+      if (FilterProvider.nation.length == 1) {
+        if (NAITON_OPTION[FilterProvider.nation![0]] ==
+            NAITON_OPTION["Gia sư Nước Ngoài"]) {
+          nationality = {
+            "isVietNamese": false,
+            "isNative": false,
+          };
+        } else if (NAITON_OPTION[FilterProvider.nation![0]] ==
+            NAITON_OPTION["Gia sư Việt Nam"]) {
+          nationality = {
+            "isVietNamese": true,
+          };
+        } else if (NAITON_OPTION[FilterProvider.nation![0]] ==
+            NAITON_OPTION["Gia sư Tiếng Anh Bản Ngữ"]) {
+          nationality = {
+            "isNative": true,
+          };
+        }
+      } else if (FilterProvider.nation.length == 2) {
+        if (FilterProvider.nation.contains("Gia sư Nước Ngoài")) {
+          if (FilterProvider.nation!.contains("Gia sư Việt Nam")) {
+            nationality = {
+              "isNative": false,
+            };
+          } else {
+            nationality = {
+              "isVietNamese": false,
+            };
+          }
+        } else {
+          nationality = {
+            "isVietNamese": true,
+            "isNative": true,
+          };
+        }
+      }
+    }
+    print(nationality);
     var res = await BaseApi.post(
         "${URL}search",
         SearchRequestPayload(
@@ -213,6 +260,7 @@ class TutorApi {
                           FilterProvider.specialties!.key != null)
                       ? [FilterProvider.specialties!.key!]
                       : [],
+                  nationality: nationality,
                 ),
                 page: '1',
                 perPage: 9,

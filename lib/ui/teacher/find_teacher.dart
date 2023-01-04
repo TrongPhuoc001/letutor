@@ -21,6 +21,7 @@ class FindTeacher extends StatefulWidget {
 
 class _FindTeacherState extends State<FindTeacher> {
   Future<TutorMoreResponse> teacherList = TutorApi.getMoreTutors(1);
+  List<String> favoriteTutors = [];
   int page = 1;
 
   Future<dynamic> getBannerInfo(User user) async {
@@ -32,9 +33,9 @@ class _FindTeacherState extends State<FindTeacher> {
   @override
   Widget build(BuildContext context) {
     context.watch<FilterProvider>().addListener(() {
-      print(FilterProvider.searchController.text);
       if (FilterProvider.searchController.text == '' &&
-          FilterProvider.specialties == null) {
+          FilterProvider.specialties == null &&
+          FilterProvider.nation == null) {
         setState(() {
           teacherList = TutorApi.getMoreTutors(page);
         });
@@ -50,7 +51,16 @@ class _FindTeacherState extends State<FindTeacher> {
         builder: ((context, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             TutorMoreResponse data = snapshot.data as TutorMoreResponse;
-
+            if (data.favoriteTutor != null) {
+              favoriteTutors = data.favoriteTutor!
+                  .map((e) => e.secondInfo!.tutorInfo!.id!)
+                  .toList();
+            }
+            data.tutors!.rows!.forEach((element) {
+              if (favoriteTutors.contains(element.id)) {
+                element.isfavoritetutor = true;
+              }
+            });
             return MainTheme(
                 context: context,
                 child: Column(children: [

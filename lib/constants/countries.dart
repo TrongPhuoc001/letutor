@@ -257,3 +257,9 @@ Map<int, String> CANCEL_COURSE = {
   3: 'Được giáo viên yêu cầu',
   4: 'Lý do khác'
 };
+
+Map<String, int> NAITON_OPTION = {
+  'Gia sư Nước Ngoài': 1,
+  "Gia sư Việt Nam": 2,
+  'Gia sư Tiếng Anh Bản Ngữ': 3
+};
