@@ -35,7 +35,7 @@ class _FindTeacherState extends State<FindTeacher> {
     context.watch<FilterProvider>().addListener(() {
       if (FilterProvider.searchController.text == '' &&
           FilterProvider.specialties == null &&
-          FilterProvider.nation == null) {
+          FilterProvider.nation.length == 0) {
         setState(() {
           teacherList = TutorApi.getMoreTutors(page);
         });
@@ -45,16 +45,24 @@ class _FindTeacherState extends State<FindTeacher> {
         });
       }
     });
-    User user = context.watch<UserProvider>().currentUser!;
+    User user = context.watch<UserProvider>().currentUser;
     return FutureBuilder(
         future: teacherList,
         builder: ((context, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             TutorMoreResponse data = snapshot.data as TutorMoreResponse;
             if (data.favoriteTutor != null) {
-              favoriteTutors = data.favoriteTutor!
-                  .map((e) => e.secondInfo!.tutorInfo!.id!)
-                  .toList();
+              favoriteTutors = data.favoriteTutor!.map((e) {
+                if (e.secondInfo != null && e.secondInfo?.tutorInfo != null) {
+                  if (e.secondInfo!.tutorInfo!.id != null) {
+                    return e.secondInfo!.tutorInfo!.id!;
+                  } else {
+                    return '';
+                  }
+                } else {
+                  return '';
+                }
+              }).toList();
             }
             data.tutors!.rows!.forEach((element) {
               if (favoriteTutors.contains(element.id)) {
@@ -97,8 +105,9 @@ class _FindTeacherState extends State<FindTeacher> {
                         });
                       })
                 ]));
+          } else {
+            return Center(child: CircularProgressIndicator());
           }
-          return Center(child: CircularProgressIndicator());
         }));
   }
 }

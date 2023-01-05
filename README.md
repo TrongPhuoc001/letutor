@@ -2,10 +2,10 @@
 
 A Flutter project.
 
-## Milestone 2 & 3
+## Demo
 
-link youtube: [https://youtu.be/Y0-mND51fGM](https://youtu.be/Y0-mND51fGM)
+link youtube: [https://youtu.be/7MnmKv6tdCo](https://youtu.be/7MnmKv6tdCo)
 
 ### Overral
 
-link tự đánh giá: [https://docs.google.com/document/d/1ggt50XIdcN3hVm4qN8PTy04DAGtG1VBa/edit?usp=sharing&ouid=108929587424843721083&rtpof=true&sd=true](tự đánh giá)
+link tự đánh giá: [Link](https://docs.google.com/document/d/1aIVG2xBFu1mf1krWculTmM2YKCP1oMeH/edit?usp=sharing&ouid=108929587424843721083&rtpof=true&sd=true)

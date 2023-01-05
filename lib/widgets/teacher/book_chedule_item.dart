@@ -124,6 +124,8 @@ class _BookingScheduleItemState extends State<BookingScheduleItem> {
                               TextButton(
                                   onPressed: () async {
                                     try {
+                                      print(widget
+                                          .element.scheduleDetails![0].id!);
                                       var res =
                                           await ScheduleApi.bookingSchedule(
                                               widget.element.scheduleDetails![0]

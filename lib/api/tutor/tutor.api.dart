@@ -251,7 +251,6 @@ class TutorApi {
         }
       }
     }
-    print(nationality);
     var res = await BaseApi.post(
         "${URL}search",
         SearchRequestPayload(

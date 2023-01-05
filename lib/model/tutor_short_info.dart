@@ -145,7 +145,7 @@ class TutorShortInfo {
     price = json['price'];
     isOnline = json['isOnline'];
     if (json['isfavoritetutor'] != null) {
-      isfavoritetutor = json['isfavoritetutor'];
+      isfavoritetutor = true;
     } else {
       isfavoritetutor = false;
     }

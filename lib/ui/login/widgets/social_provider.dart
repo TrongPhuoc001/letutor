@@ -63,7 +63,7 @@ class SocialProvider extends StatelessWidget {
           SharedPreferences prefs =
               Provider.of<SharedPreferences>(context, listen: false);
           LoginResponse loginResponse =
-              await AuthApi.googleLogin(accessToken!.token);
+              await AuthApi.facebookLogin(accessToken!.token);
           context
               .read<UserProvider>()
               .login(loginResponse.user!, loginResponse.tokens!);

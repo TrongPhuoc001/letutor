@@ -9,7 +9,6 @@ notification({context, message, color = Colors.blue}) {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(24),
     ),
-    margin: EdgeInsets.only(
-        bottom: MediaQuery.of(context).size.height - 100, right: 20, left: 20),
+    duration: Duration(seconds: 1),
   ));
 }

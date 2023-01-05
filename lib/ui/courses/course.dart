@@ -28,6 +28,7 @@ class _CourseState extends State<Course> {
   List<int> _selected_levels = [];
   String? _selected_sort = null;
   TextEditingController _searchController = TextEditingController();
+  String _search = '';
 
   List<String> urls = ['course', 'e-book', 'material/interactive-e-book'];
   Future<List<Category>> getCategory() async {
@@ -59,9 +60,10 @@ class _CourseState extends State<Course> {
           'categories': _selected_categories,
           'levels': _selected_levels,
           'sort': _selected_sort,
-          'search': _searchController.text
+          'search': _search
         }),
         builder: ((context, snapshot) {
+          print(_search);
           if (snapshot.hasData && snapshot.data != null) {
             CourseListResponse res = snapshot.data as CourseListResponse;
             List<CourseModel> courses = res.data!.rows!;
@@ -118,7 +120,11 @@ class _CourseState extends State<Course> {
                                     child: Padding(
                                       padding: EdgeInsets.all(3),
                                       child: InkWell(
-                                          onTap: () {},
+                                          onTap: () {
+                                            setState(() {
+                                              _search = _searchController.text;
+                                            });
+                                          },
                                           child: const Icon(
                                             Icons.search,
                                             color: Color.fromRGBO(
@@ -243,6 +249,7 @@ class _CourseState extends State<Course> {
                                     _selected_levels = [];
                                     _selected_sort = null;
                                     _searchController.text = '';
+                                    _search = '';
                                   });
                                 }),
                           )

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lettutor/api/schedule/schedule.api.dart';
@@ -17,6 +19,13 @@ class TeacherSchedule extends StatefulWidget {
 
 class _TeacherScheduleState extends State<TeacherSchedule> {
   DateTime _selectedDate = DateTime.now();
+
+  List<BookingScheduleItem> renderBookingItem(
+      DateTime date, List<ScheduleOfTutor> schedules) {
+    return schedules
+        .map((e) => BookingScheduleItem(element: e, key: Key(e.id!)))
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +76,7 @@ class _TeacherScheduleState extends State<TeacherSchedule> {
                             _selectedDate.year.toString())),
                   ],
                 ),
-                ...schedules.map((e) => BookingScheduleItem(element: e)),
+                ...renderBookingItem(_selectedDate, schedules),
                 schedules.length == 0 ? Text("Không có lịch học") : Container()
               ]),
             );

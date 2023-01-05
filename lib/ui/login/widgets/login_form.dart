@@ -99,18 +99,10 @@ class _LoginFormState extends State<LoginForm> {
           widget.type == "login"
               ? TextButton(
                   onPressed: () async {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const ForgetPassword()));
-                    try {
-                      throw Exception("Test");
-                    } catch (exception, stackTrace) {
-                      await Sentry.captureException(
-                        exception,
-                        stackTrace: stackTrace,
-                      );
-                    }
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ForgetPassword()));
                   },
                   child: const Text('Quên mật khẩu?'))
               : SizedBox(),

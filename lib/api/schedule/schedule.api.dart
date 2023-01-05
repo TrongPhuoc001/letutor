@@ -366,11 +366,11 @@ class ScheduleApi {
       if (res.statusCode == 200) {
         return json.decode(res.body);
       } else {
-        return throw Exception('Failed to load Schedule');
+        return throw json.decode(res.body)['message'];
       }
     } catch (err) {
       print(err);
-      return throw Exception('Failed to load Schedule');
+      return throw Exception(err);
     }
   }
 
